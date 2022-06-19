@@ -1,16 +1,21 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, Text, TouchableOpacity} from 'react-native';
 import styles from './styles';
 
 type Props = {
   label: string;
   onPress?: () => any;
+  isLoading?: boolean;
 };
 
-const Button = ({label, onPress}: Props) => {
+const Button = ({label, onPress, isLoading}: Props) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>{label}</Text>
+      {isLoading ? (
+        <ActivityIndicator color="#fff" />
+      ) : (
+        <Text style={styles.text}>{label}</Text>
+      )}
     </TouchableOpacity>
   );
 };

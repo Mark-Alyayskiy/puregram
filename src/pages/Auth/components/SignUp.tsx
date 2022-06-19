@@ -16,9 +16,10 @@ import {SignUpFormData} from '../../../types/formData';
 type Props = {
   setIsSignIn: (arg: boolean) => void;
   onSubmit: (values: SignUpFormData) => void;
+  isLoading: boolean;
 };
 
-const SignUp = ({setIsSignIn, onSubmit}: Props) => {
+const SignUp = ({setIsSignIn, onSubmit, isLoading}: Props) => {
   return (
     <Form
       onSubmit={onSubmit}
@@ -29,20 +30,13 @@ const SignUp = ({setIsSignIn, onSubmit}: Props) => {
           </View>
           <Field
             validate={required}
-            label="Enter your First name"
-            name="firstName"
+            label="Username"
+            name="username"
             component={Input}
             Icon={<Name />}
-            placeholder="Enter your First name"
+            placeholder="Username"
           />
-          <Field
-            validate={required}
-            label="Enter your Last name"
-            name="lastName"
-            component={Input}
-            Icon={<Name />}
-            placeholder="Enter your Last name"
-          />
+
           <Field
             label="Enter email"
             name="email"
@@ -61,7 +55,11 @@ const SignUp = ({setIsSignIn, onSubmit}: Props) => {
             placeholder="Enter password"
           />
 
-          <Button label="Sign Up" onPress={handleSubmit} />
+          <Button
+            label="Sign Up"
+            onPress={handleSubmit}
+            isLoading={isLoading}
+          />
           <TouchableOpacity onPress={() => setIsSignIn(true)}>
             <Text style={styles.signUp}>
               Allready have an account?

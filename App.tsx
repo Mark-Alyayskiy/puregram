@@ -1,39 +1,22 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
+import {Text} from 'react-native';
+import {Provider as ReduxProvider} from 'react-redux';
 
-import Auth from './src/pages/Auth';
-import Home from './src/pages/Home';
+import {PersistGate} from 'redux-persist/integration/react';
 
-const Stack = createNativeStackNavigator();
-
-const headerOptions = {
-  title: '',
-  headerTitleAlign: 'center' as 'center' | 'left' | undefined,
-  headerStyle: {
-    backgroundColor: '#181a20',
-  },
-  headerTitleStyle: {
-    color: '#fff',
-  },
-};
+import Navigation from './src/pages/navigation';
+import StoreGate from './src/pages/StoreGate';
+import {persistor, store} from './src/store';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          options={{...headerOptions}}
-          name="Auth"
-          component={Auth}
-        />
-        <Stack.Screen
-          options={{...headerOptions}}
-          name="Home"
-          component={Home}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ReduxProvider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <StoreGate>
+          <Navigation />
+        </StoreGate>
+      </PersistGate>
+    </ReduxProvider>
   );
 };
 

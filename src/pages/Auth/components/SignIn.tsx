@@ -17,9 +17,10 @@ import {SignInFormData} from '../../../types/formData';
 type Props = {
   setIsSignIn: (arg: boolean) => void;
   onSubmit: (values: SignInFormData) => void;
+  isLoading: boolean;
 };
 
-const SignIn = ({setIsSignIn, onSubmit}: Props) => {
+const SignIn = ({setIsSignIn, onSubmit, isLoading}: Props) => {
   return (
     <Form
       onSubmit={onSubmit}
@@ -29,12 +30,12 @@ const SignIn = ({setIsSignIn, onSubmit}: Props) => {
             <Text style={styles.titleText}>Login to your{'\n'}account</Text>
           </View>
           <Field
-            label="Enter email"
+            label="Email"
             name="email"
             validate={composeValidators(required, isEmail)}
             component={Input}
             Icon={<MailIcon />}
-            placeholder="Enter email"
+            placeholder="Email"
           />
           <Field
             label="Enter password"
@@ -46,7 +47,11 @@ const SignIn = ({setIsSignIn, onSubmit}: Props) => {
             placeholder="Enter password"
           />
 
-          <Button label="Sign In" onPress={handleSubmit} />
+          <Button
+            label="Sign In"
+            onPress={handleSubmit}
+            isLoading={isLoading}
+          />
           <TouchableOpacity onPress={() => setIsSignIn(false)}>
             <Text style={styles.signUp}>
               Don`t have an account?
