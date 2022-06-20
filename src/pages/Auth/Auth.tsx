@@ -35,7 +35,6 @@ const Auth = ({navigation}: NativeStackScreenProps<NavigationList, 'Auth'>) => {
           accessToken: res.access_token,
         }),
       );
-      navigation.navigate('Home');
     } else if (res.error) {
       setIsErrorModalVisible(true);
       setErrorModalText(res.message);

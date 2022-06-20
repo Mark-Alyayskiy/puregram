@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 
 import {useSelector} from 'react-redux';
+import Loader from '../components/Loader';
 
 const StoreGate = ({children}) => {
   const [isGateOpen, setIsGateOpen] = useState(false);
@@ -11,7 +12,7 @@ const StoreGate = ({children}) => {
     setIsGateOpen(_persist.rehydrated);
   }, [_persist.rehydrated]);
 
-  return <React.Fragment>{isGateOpen ? children : null}</React.Fragment>;
+  return <React.Fragment>{isGateOpen ? children : Loader}</React.Fragment>;
 };
 
 export default StoreGate;

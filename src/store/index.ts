@@ -10,16 +10,17 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import {reducer} from './ducks';
+import {actions, reducer} from './ducks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type State = ReturnType<typeof reducer>;
 
 const persistConfig = {key: 'root', storage: AsyncStorage};
 
-export const rootReducer = (state: State, actions: any) => {
-  const nextState = state;
-  return reducer(nextState, actions);
+export const rootReducer = (state: State, action: any) => {
+  let nextState = state;
+
+  return reducer(nextState, action);
 };
 
 const persistetReducer = persistReducer(persistConfig, rootReducer);

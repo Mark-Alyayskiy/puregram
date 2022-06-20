@@ -63,7 +63,7 @@ const SignUp = ({setIsSignIn, onSubmit, isLoading}: Props) => {
           <TouchableOpacity onPress={() => setIsSignIn(true)}>
             <Text style={styles.signUp}>
               Allready have an account?
-              <Text style={styles.textSignUp}> Sign Up.</Text>
+              <Text style={styles.textSignUp}> Sign In.</Text>
             </Text>
           </TouchableOpacity>
         </View>
