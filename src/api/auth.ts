@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const BASE_URL = 'https://puregram-api.herokuapp.com/api';
+import {BASE_URL} from '.';
 
 export const signIn = async (email: string, password: string) => {
   console.log(email, password);
