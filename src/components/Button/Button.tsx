@@ -6,11 +6,12 @@ type Props = {
   label: string;
   onPress?: () => any;
   isLoading?: boolean;
+  customStyles?: any;
 };
 
-const Button = ({label, onPress, isLoading}: Props) => {
+const Button = ({label, onPress, isLoading, customStyles}: Props) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={[styles.button, customStyles]} onPress={onPress}>
       {isLoading ? (
         <ActivityIndicator color="#fff" />
       ) : (

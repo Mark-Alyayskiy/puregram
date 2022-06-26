@@ -1,6 +1,6 @@
 import {View, Text, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useIsFocused} from '@react-navigation/native';
 import Button from '../../components/Button';
 import {useDispatch} from 'react-redux';
 import {actions} from '../../store/ducks';
@@ -9,7 +9,9 @@ import Post from '../../components/Post';
 import {Post as PostType} from '../../types/post';
 
 import {posts} from '../../api';
+import Input from '../../components/Input';
 const Home = () => {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [data, setData] = useState(null as null | PostType[]);
 
@@ -19,7 +21,7 @@ const Home = () => {
   };
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [isFocused]);
 
   const signOut = () => {
     dispatch(actions.auth.signOut());

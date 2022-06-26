@@ -5,3 +5,5 @@ export {default as Eye} from './Eye';
 export {default as HomeIcon} from './Home';
 export {default as PersonIcon} from './Person';
 export {default as HeartIcon} from './Heart';
+export {default as PlusIcon} from './Plus';
+export {default as CaptureIcon} from './Capture';

@@ -2,12 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Auth from './Auth';
 import Home from './Home';
+import AddPost from './AddPost';
+
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 import {selectors} from '../store/ducks';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RootState} from '../store';
-import {HomeIcon, PersonIcon} from '../assets/svg';
+import {HomeIcon, PersonIcon, PlusIcon} from '../assets/svg';
 import Profile from './Profile';
 import {TouchableOpacity, View} from 'react-native';
 import axios from 'axios';
@@ -27,11 +29,15 @@ const headerOptions = {
 };
 
 const Navigation = () => {
+  const [isBearer, setIsBearer] = useState(false);
+
   const setBearer = () => {
     if (accessToken) {
       axios.defaults.headers.common.Authorization = 'Bearer ' + accessToken;
+      setIsBearer(true);
     } else {
       axios.defaults.headers.common.Authorization = false;
+
       /*if setting null does not remove Authorization header then try
           delete axios.defaults.headers.common['Authorization'];
         */
@@ -49,7 +55,11 @@ const Navigation = () => {
   useEffect(() => {
     getToken();
     setBearer();
-  }, []);
+  }, [accessToken]);
+
+  if (!isBearer && accessToken) {
+    return null;
+  }
 
   return (
     <NavigationContainer>
@@ -95,6 +105,16 @@ const Navigation = () => {
             name="Home"
             component={Home}
           />
+          <MainStack.Screen
+            options={{
+              tabBarIcon: ({focused}) => (
+                <PlusIcon color={focused ? '#ff4d67' : '#fff'} />
+              ),
+            }}
+            name="AddPost"
+            component={AddPost}
+          />
+
           <MainStack.Screen
             options={{
               tabBarIcon: ({focused}) => (

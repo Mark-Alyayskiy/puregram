@@ -17,6 +17,8 @@ type FieldProps = FieldRenderProps<string, any> & {
   label: string;
   hidePassword?: boolean;
   Icon?: React.ReactNode;
+  customContainerStyles?: any;
+  customInputStyle?: any;
   onBlur?: ((event: NativeSyntheticEvent<TextInputFocusEventData>) => void) &
     ((args: any) => void);
   onFocus?: ((event: NativeSyntheticEvent<TextInputFocusEventData>) => void) &
@@ -30,11 +32,13 @@ const Input = ({
   placeholder,
   input,
   Icon,
+  customContainerStyles,
+  customInputStyle,
 }: FieldProps) => {
   const [isTextHidden, setIsTextHidden] = useState(hidePassword);
 
   return (
-    <View style={[styles.inputContainer]}>
+    <View style={[styles.inputContainer, customContainerStyles]}>
       <Text style={styles.label}>{label}</Text>
       <View>
         <View style={styles.image}>{Icon}</View>
@@ -46,6 +50,7 @@ const Input = ({
           placeholder={placeholder}
           style={[
             meta.touched && meta.error ? styles.inputInvalid : styles.input,
+            customInputStyle,
           ]}
           {...input}
           secureTextEntry={isTextHidden}
