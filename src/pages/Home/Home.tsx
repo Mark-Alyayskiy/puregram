@@ -1,6 +1,6 @@
-import {View, Text, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {NavigationContainer, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import Button from '../../components/Button';
 import {useDispatch} from 'react-redux';
 import {actions} from '../../store/ducks';
@@ -9,7 +9,8 @@ import Post from '../../components/Post';
 import {Post as PostType} from '../../types/post';
 
 import {posts} from '../../api';
-import Input from '../../components/Input';
+import Loader from '../../components/Loader';
+
 const Home = () => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -19,17 +20,20 @@ const Home = () => {
     const res = await posts.getPosts();
     setData(res);
   };
+
   useEffect(() => {
-    getPosts();
+    if (isFocused) {
+      getPosts();
+    }
   }, [isFocused]);
 
   const signOut = () => {
     dispatch(actions.auth.signOut());
   };
+
   return (
     <ScrollView contentContainerStyle={styles.body}>
-      {data && data.map(post => <Post post={post} />)}
-
+      {data ? data.map(post => <Post post={post} key={post.id} />) : <Loader />}
       <Button onPress={signOut} label={'Sign out'} />
     </ScrollView>
   );

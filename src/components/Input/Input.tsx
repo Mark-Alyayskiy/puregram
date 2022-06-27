@@ -51,6 +51,7 @@ const Input = ({
           style={[
             meta.touched && meta.error ? styles.inputInvalid : styles.input,
             customInputStyle,
+            !Icon && {paddingLeft: 15},
           ]}
           {...input}
           secureTextEntry={isTextHidden}

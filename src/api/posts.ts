@@ -6,18 +6,21 @@ export const getPosts = async () => {
   return res.data;
 };
 
-export const addPost = async (label: string, image: any, token: string) => {
-  console.log('image', image);
+export const addPost = async (
+  label: string,
+  imageUrl: string,
+  token: string,
+) => {
+  const newImageUri = 'file:///' + imageUrl.split('file:/').join('');
   const formData = new FormData();
   formData.append('label', label);
   formData.append('image', {
     type: 'image/jpg',
-    name: 'Mark.jpg',
-
-    uri: 'file://' + image.path,
+    name: newImageUri.split('/').pop(),
+    uri: 'file://' + imageUrl,
   });
 
-  await fetch(`${BASE_URL}/posts`, {
+  return await fetch(`${BASE_URL}/posts`, {
     method: 'post',
     headers: {
       Accept: 'application/json',
@@ -25,7 +28,4 @@ export const addPost = async (label: string, image: any, token: string) => {
     },
     body: formData,
   });
-
-  // const res = await axios.post(`${BASE_URL}/posts`, formData);
-  // return res.data;
 };

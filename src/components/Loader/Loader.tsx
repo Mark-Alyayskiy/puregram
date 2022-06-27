@@ -6,7 +6,7 @@ import {Text} from 'react-native-svg';
 const Loader = () => {
   return (
     <View style={styles.main}>
-      <ActivityIndicator color="#000" />
+      <ActivityIndicator color="#fff" />
       <Text>Tsdvsdg</Text>
     </View>
   );

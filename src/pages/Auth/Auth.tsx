@@ -5,14 +5,14 @@ import styles from './styles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SignIn from './components/SignIn';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {NavigationList} from '../../types/navigation';
+import {AuthNavigationList} from '../../types/navigation';
 import {SignInFormData, SignUpFormData} from '../../types/formData';
 import {auth} from '../../api';
 import ErrorModal from '../../components/ErrorModal';
 import {useDispatch} from 'react-redux';
 import {actions} from '../../store/ducks';
 
-const Auth = ({navigation}: NativeStackScreenProps<NavigationList, 'Auth'>) => {
+const Auth = ({navigation}: NativeStackScreenProps<AuthNavigationList, 'Auth'>) => {
   const [isSignIn, setIsSignIn] = useState(true);
   const dispatch = useDispatch();
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Auth from './Auth';
@@ -8,11 +9,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 import {selectors} from '../store/ducks';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {RootState} from '../store';
 import {HomeIcon, PersonIcon, PlusIcon} from '../assets/svg';
 import Profile from './Profile';
-import {TouchableOpacity, View} from 'react-native';
 import axios from 'axios';
+import PostEditor from './PostEditor';
 
 const AuthStack = createNativeStackNavigator();
 const MainStack = createBottomTabNavigator();
@@ -37,23 +37,12 @@ const Navigation = () => {
       setIsBearer(true);
     } else {
       axios.defaults.headers.common.Authorization = false;
-
-      /*if setting null does not remove Authorization header then try
-          delete axios.defaults.headers.common['Authorization'];
-        */
     }
   };
 
-  console.log('12123123', 12123123);
   const accessToken = useSelector(selectors.auth.selectAccessToken);
-  console.log('accessToken', accessToken);
-
-  const getToken = () => {
-    console.log('text');
-  };
 
   useEffect(() => {
-    getToken();
     setBearer();
   }, [accessToken]);
 
@@ -114,7 +103,6 @@ const Navigation = () => {
             name="AddPost"
             component={AddPost}
           />
-
           <MainStack.Screen
             options={{
               tabBarIcon: ({focused}) => (
@@ -123,6 +111,17 @@ const Navigation = () => {
             }}
             name="Profile"
             component={Profile}
+          />
+          <MainStack.Screen
+            options={{
+              tabBarLabel: '',
+              tabBarItemStyle: {
+                position: 'absolute',
+              },
+              tabBarIcon: () => null,
+            }}
+            name="PostEditor"
+            component={PostEditor}
           />
         </MainStack.Navigator>
       )}

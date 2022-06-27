@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import React from 'react';
 import {HeartIcon} from '../../assets/svg';
 import styles from '../Post/styles';
@@ -23,14 +23,11 @@ const Post = ({post}: Props) => {
         <Text style={styles.usernameLabel}>{post.username}</Text>
       </View>
       <View style={styles.imageContainer}>
-        {/* <Image
-          style={styles.image}
-          source={{
-            uri: post.imageUrl,
-          }}
-        /> */}
         <ImageViewer
-          renderIndicator={undefined}
+          renderIndicator={() => <React.Fragment />}
+          backgroundColor="#181a20"
+          maxOverflow={0}
+          flipThreshold={0}
           renderHeader={undefined}
           imageUrls={[{url: post.imageUrl}]}
         />
