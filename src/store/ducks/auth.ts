@@ -30,4 +30,6 @@ export const actions = {
 
 export const selectors = {
   selectAccessToken: (state: RootState) => state.auth.user.accessToken,
+  selectCurrentId: (state: RootState) => state.auth.user.id,
+  selectUser: (state: RootState) => state.auth.user,
 };

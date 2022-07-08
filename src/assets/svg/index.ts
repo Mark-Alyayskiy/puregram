@@ -7,3 +7,5 @@ export {default as PersonIcon} from './Person';
 export {default as HeartIcon} from './Heart';
 export {default as PlusIcon} from './Plus';
 export {default as CaptureIcon} from './Capture';
+export {default as GreedIcon} from './Lattice';
+export {default as FeedIcon} from './VerticalLattice';

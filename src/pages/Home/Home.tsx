@@ -27,14 +27,9 @@ const Home = () => {
     }
   }, [isFocused]);
 
-  const signOut = () => {
-    dispatch(actions.auth.signOut());
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.body}>
       {data ? data.map(post => <Post post={post} key={post.id} />) : <Loader />}
-      <Button onPress={signOut} label={'Sign out'} />
     </ScrollView>
   );
 };

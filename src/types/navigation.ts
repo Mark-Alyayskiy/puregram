@@ -5,4 +5,5 @@ export type MainNavigationList = {
   Profile: undefined;
   AddPost: undefined;
   PostEditor: {imageUrl: string};
+  EditProfile: undefined;
 };

@@ -6,6 +6,11 @@ export const getPosts = async () => {
   return res.data;
 };
 
+export const getUserPostsById = async (id: string) => {
+  const res = await axios.get(`${BASE_URL}/posts/user/${id}`);
+  return res.data;
+};
+
 export const addPost = async (
   label: string,
   imageUrl: string,
