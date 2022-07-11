@@ -67,11 +67,23 @@ const styles = StyleSheet.create({
   imageGridContainer: {
     flexDirection: 'row',
     width: '100%',
+
     flexWrap: 'wrap',
   },
   imageGrid: {
     width: windowWidth / 3,
     height: windowWidth / 3,
+  },
+  rootGrid: {
+    backgroundColor: '#181a20',
+  },
+  subscribeBtnContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  subscribeBtn: {
+    width: 100,
+    height: 30,
   },
 });
 

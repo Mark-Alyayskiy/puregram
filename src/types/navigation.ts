@@ -2,8 +2,7 @@ export type AuthNavigationList = {Auth: undefined; Home: undefined};
 
 export type MainNavigationList = {
   Home: undefined;
-  Profile: undefined;
+  Profile: {userId: string};
   AddPost: undefined;
   PostEditor: {imageUrl: string};
-  EditProfile: undefined;
 };

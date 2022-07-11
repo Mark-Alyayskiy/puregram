@@ -41,6 +41,7 @@ const Navigation = () => {
   };
 
   const accessToken = useSelector(selectors.auth.selectAccessToken);
+  const userId = useSelector(selectors.auth.selectCurrentId);
 
   useEffect(() => {
     setBearer();
@@ -109,6 +110,13 @@ const Navigation = () => {
                 <PersonIcon color={focused ? '#ff4d67' : '#fff'} />
               ),
             }}
+            listeners={({navigation}) => ({
+              tabPress: e => {
+                e.preventDefault();
+                navigation.navigate('Profile', {userId: userId});
+              },
+            })}
+            initialParams={{userId}}
             name="Profile"
             component={Profile}
           />

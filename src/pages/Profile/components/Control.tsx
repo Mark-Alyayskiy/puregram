@@ -1,6 +1,6 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {FeedIcon, GreedIcon} from '../../../assets/svg';
+import {FeedIcon, GreedIcon as GridIcon} from '../../../assets/svg';
 import {Layout} from '../types';
 import styles from '../styles';
 
@@ -15,7 +15,7 @@ const Control = ({onLayoutChange, selectedLayout}: Props) => {
       <TouchableOpacity
         onPress={() => onLayoutChange(Layout.Feed)}
         style={styles.switchImage}>
-        <GreedIcon
+        <FeedIcon
           focused={false}
           color={selectedLayout === Layout.Feed ? '#ff4d67' : '#fff'}
         />
@@ -23,7 +23,7 @@ const Control = ({onLayoutChange, selectedLayout}: Props) => {
       <TouchableOpacity
         onPress={() => onLayoutChange(Layout.Grid)}
         style={styles.switchImage}>
-        <FeedIcon
+        <GridIcon
           focused={false}
           color={selectedLayout === Layout.Grid ? '#ff4d67' : '#fff'}
         />

@@ -19,30 +19,44 @@ import Header from './components/Header';
 import Control from './components/Control';
 import {Layout} from './types';
 import GridView from './components/GridView';
+import {User as UserType} from '../../types/user';
 
 const Profile = ({
+  route,
   navigation,
-}: NativeStackScreenProps<MainNavigationList, 'EditProfile'>) => {
+}: NativeStackScreenProps<MainNavigationList, 'Profile'>) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const {userId} = route.params;
 
-  const currentUserId = useSelector(selectors.auth.selectCurrentId);
-  const currentUser = useSelector(selectors.auth.selectUser);
-
-  const [data, setData] = useState(null as null | PostType[]);
+  const [userData, setUserData] = useState(null as null | UserType);
+  const [postsData, setPostData] = useState(null as null | PostType[]);
   const [selectedLayout, setSelectedLayout] = useState(Layout.Feed as Layout);
 
-  console.log('currentUser', currentUser);
+  const getUserById = async () => {
+    const res = await users.getUser(userId);
+    setUserData(res);
+  };
+
+  console.log('userId', userId);
+
+  const currentUser = useSelector(selectors.auth.selectUser);
+
+  console.log('postsData', postsData);
 
   const getUserPosts = async () => {
-    const res = await posts.getUserPostsById(currentUserId);
-    setData(res);
+    const res = await posts.getUserPostsById(userId);
+    setPostData(res);
     console.log('res', res);
   };
 
   useEffect(() => {
     if (isFocused) {
       getUserPosts();
+      getUserById();
+    } else {
+      setPostData(null);
+      setUserData(null);
     }
   }, [isFocused]);
 
@@ -53,30 +67,41 @@ const Profile = ({
   const onLayoutChange = (nextLayout: Layout) => {
     setSelectedLayout(nextLayout);
   };
-  if (!data) {
+
+  const subscribe = () => {};
+
+  if (!postsData || !userData) {
     return <Loader />;
   }
+
   return (
-    <ScrollView>
+    <ScrollView style={styles.rootGrid}>
       <View style={styles.root}>
         <Header
-          publicationsCount={data.length}
-          username={currentUser.username}
+          publicationsCount={postsData.length}
+          username={userData.username}
           followersCount={55}
           followCount={55}
           userAvatar={
             'https://klike.net/uploads/posts/2019-03/1551774929_2.jpg'
           }
         />
+        <View style={styles.subscribeBtnContainer}>
+          <Button
+            customStyles={styles.subscribeBtn}
+            label="subscribe"
+            onPress={subscribe}
+          />
+        </View>
         <Control
           onLayoutChange={onLayoutChange}
           selectedLayout={selectedLayout}
         />
 
         {selectedLayout === Layout.Grid ? (
-          <GridView posts={data} />
+          <GridView posts={postsData} />
         ) : (
-          data.map(post => <Post post={post} key={post.id} />)
+          postsData.map(post => <Post post={post} key={post.id} />)
         )}
 
         {/* <Button onPress={signOut} label={'Sign out'} /> */}
