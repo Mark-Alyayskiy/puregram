@@ -20,6 +20,8 @@ import Control from './components/Control';
 import {Layout} from './types';
 import GridView from './components/GridView';
 import {User as UserType} from '../../types/user';
+import {subscriptions} from '../../api';
+import UsersModal from './components/UsersModal';
 
 const Profile = ({
   route,
@@ -27,6 +29,10 @@ const Profile = ({
 }: NativeStackScreenProps<MainNavigationList, 'Profile'>) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [userType, setUserType] = useState('subscribers');
+
   const {userId} = route.params;
 
   const [userData, setUserData] = useState(null as null | UserType);
@@ -68,7 +74,25 @@ const Profile = ({
     setSelectedLayout(nextLayout);
   };
 
-  const subscribe = () => {};
+  console.log('userData', userData);
+
+  const subscribe = async () => {
+    setIsLoading(true);
+    const res = await subscriptions.subscribeToUser(userId);
+    await getUserById();
+    setIsLoading(false);
+    console.log('res', res);
+  };
+
+  const showFollowers = () => {
+    setUserType('subscribers');
+    setIsModalVisible(true);
+  };
+
+  const showFollow = () => {
+    setUserType('subscribed');
+    setIsModalVisible(true);
+  };
 
   if (!postsData || !userData) {
     return <Loader />;
@@ -77,21 +101,34 @@ const Profile = ({
   return (
     <ScrollView style={styles.rootGrid}>
       <View style={styles.root}>
+        <UsersModal
+          navigation={navigation}
+          userType={userType}
+          visible={isModalVisible}
+          currentUserId={userId}
+          onModalClose={() => setIsModalVisible(false)}
+        />
+        {/* <Button onPress={signOut} label={'Sign out'} /> */}
         <Header
+          showFollow={showFollow}
+          showFollowers={showFollowers}
           publicationsCount={postsData.length}
           username={userData.username}
-          followersCount={55}
-          followCount={55}
+          followersCount={userData.subscriberCount}
+          followCount={userData.subscribedCount}
           userAvatar={
             'https://klike.net/uploads/posts/2019-03/1551774929_2.jpg'
           }
         />
         <View style={styles.subscribeBtnContainer}>
-          <Button
-            customStyles={styles.subscribeBtn}
-            label="subscribe"
-            onPress={subscribe}
-          />
+          {currentUser.id !== userId && !userData.isSubscribed && (
+            <Button
+              customStyles={styles.subscribeBtn}
+              label="subscribe"
+              onPress={subscribe}
+              isLoading={isLoading}
+            />
+          )}
         </View>
         <Control
           onLayoutChange={onLayoutChange}
@@ -103,8 +140,6 @@ const Profile = ({
         ) : (
           postsData.map(post => <Post post={post} key={post.id} />)
         )}
-
-        {/* <Button onPress={signOut} label={'Sign out'} /> */}
       </View>
     </ScrollView>
   );

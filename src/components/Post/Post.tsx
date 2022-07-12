@@ -1,4 +1,4 @@
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {DotsIcon, HeartIcon} from '../../assets/svg';
 import styles from '../Post/styles';
@@ -20,9 +20,7 @@ const Post = ({post}: Props) => {
     const res = await posts.getUserPostById(id);
   };
 
-  const deletePost = () => {};
-
-  console.log('post', post);
+  const openMenu = () => {};
 
   return (
     <View style={styles.root}>
@@ -39,9 +37,14 @@ const Post = ({post}: Props) => {
 
           <Text style={styles.usernameLabel}>{post.username}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.delBtn} onPress={() => deletePost}>
+        <TouchableOpacity style={styles.delBtn} onPress={() => openMenu}>
           <DotsIcon color="#fff" />
         </TouchableOpacity>
+        {/* <Modal>
+          <View style={styles.rootPostMenu}>
+            <Text>2322</Text>
+          </View>
+        </Modal> */}
       </View>
       <View style={styles.imageContainer}>
         <ImageViewer

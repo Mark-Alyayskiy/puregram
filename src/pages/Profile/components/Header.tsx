@@ -1,17 +1,27 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  TouchableOpacityBase,
+  View,
+} from 'react-native';
 import styles from '../styles';
 import {Layout} from '../types';
 
 type Props = {
   username: string;
   publicationsCount: number;
-  followersCount: number;
-  followCount: number;
+  followersCount?: number;
+  followCount?: number;
   userAvatar: string;
+  showFollowers: () => void;
+  showFollow: () => void;
 };
 
 const Header = ({
+  showFollow,
+  showFollowers,
   username,
   publicationsCount,
   followersCount,
@@ -34,14 +44,18 @@ const Header = ({
           <Text style={styles.userDataText}>{publicationsCount} </Text>
           <Text style={styles.userDataText}>publications</Text>
         </View>
-        <View style={styles.userDataItems}>
-          <Text style={styles.userDataText}>{followersCount} </Text>
-          <Text style={styles.userDataText}>followers</Text>
-        </View>
-        <View style={styles.userDataItems}>
-          <Text style={styles.userDataText}>{followCount} </Text>
-          <Text style={styles.userDataText}>follow</Text>
-        </View>
+        <TouchableOpacity onPress={showFollowers}>
+          <View style={styles.userDataItems}>
+            <Text style={styles.userDataText}>{followersCount} </Text>
+            <Text style={styles.userDataText}>followers</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={showFollow}>
+          <View style={styles.userDataItems}>
+            <Text style={styles.userDataText}>{followCount} </Text>
+            <Text style={styles.userDataText}>follow</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -62,6 +62,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     paddingLeft: 5,
   },
+  rootPostMenu: {
+    width: 400,
+  },
 });
 
 export default styles;

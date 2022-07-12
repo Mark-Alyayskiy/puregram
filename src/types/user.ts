@@ -3,4 +3,7 @@ export type User = {
   username: string;
   email: string;
   accessToken: string;
+  subscriberCount?: number;
+  subscribedCount?: number;
+  isSubscribed?: boolean;
 };

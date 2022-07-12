@@ -85,6 +85,33 @@ const styles = StyleSheet.create({
     width: 100,
     height: 30,
   },
+  modal: {
+    backgroundColor: '#181a20',
+    borderRadius: 10,
+
+    height: '100%',
+  },
+  userModalContainer: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userModalAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    marginHorizontal: 20,
+    marginTop: 10,
+  },
+  userNameText: {
+    color: '#fff',
+    fontSize: 20,
+  },
+  buttonCloseContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default styles;
