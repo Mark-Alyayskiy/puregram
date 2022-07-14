@@ -112,6 +112,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  drawer: {
+    backgroundColor: '#181a20',
+  },
+  drawerButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderBottomWidth: 2,
+    borderBottomColor: '#262830',
+  },
+  drawerButtonText: {
+    color: '#fff',
+    fontSize: 20,
+    textAlign: 'center',
+  },
 });
 
 export default styles;

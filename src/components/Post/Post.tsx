@@ -31,14 +31,14 @@ const Post = ({post}: Props) => {
           <Image
             style={styles.userAvatar}
             source={{
-              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvmgRdgDaYNygYqSk_zJ4kUC596fsC8yy45g&usqp=CAU',
+              uri: post.avatarUrl,
             }}
           />
 
           <Text style={styles.usernameLabel}>{post.username}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.delBtn} onPress={() => openMenu}>
-          <DotsIcon color="#fff" />
+          <DotsIcon />
         </TouchableOpacity>
         {/* <Modal>
           <View style={styles.rootPostMenu}>

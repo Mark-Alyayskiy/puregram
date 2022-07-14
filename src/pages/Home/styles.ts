@@ -8,7 +8,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
   },
-
+  noPostsText: {
+    color: '#fff',
+    fontSize: 20,
+  },
   text: {
     color: 'white',
   },

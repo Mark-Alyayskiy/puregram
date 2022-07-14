@@ -1,5 +1,5 @@
-import {View, ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useRef, useState, useLayoutEffect} from 'react';
 
 import styles from '../Profile/styles';
 import {useSelector} from 'react-redux';
@@ -20,6 +20,12 @@ import GridView from './components/GridView';
 import {SubscriberType, UserType} from '../../types/user';
 import {subscriptions} from '../../api';
 import UsersModal from './components/UsersModal';
+import {
+  DrawerLayout,
+  gestureHandlerRootHOC,
+} from 'react-native-gesture-handler';
+import {DotsIcon} from '../../assets/svg';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const Profile = ({
   route,
@@ -27,10 +33,12 @@ const Profile = ({
 }: NativeStackScreenProps<MainNavigationList, 'Profile'>) => {
   const {userId} = route.params;
 
+  let drawer = useRef(null as null | {openDrawer: () => void} | any);
+
   const currentUser = useSelector(selectors.auth.selectUser);
+  const accessToken = useSelector(selectors.auth.selectAccessToken);
 
   const isFocused = useIsFocused();
-  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -38,6 +46,12 @@ const Profile = ({
   const [postsData, setPostData] = useState(null as null | PostType[]);
   const [selectedLayout, setSelectedLayout] = useState(Layout.Feed as Layout);
   const [modalData, setModalData] = useState(null as null | SubscriberType[]);
+
+  const dispatch = useDispatch();
+
+  const signOut = () => {
+    dispatch(actions.auth.signOut());
+  };
 
   const getUserById = async () => {
     const res = await users.getUser(userId);
@@ -66,6 +80,16 @@ const Profile = ({
     }
   }, [isFocused]);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => drawer!.current!.openDrawer()}>
+          <DotsIcon />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   const updateUserData = async () => {
     setUserData(null);
     setPostData(null);
@@ -82,10 +106,6 @@ const Profile = ({
       setModalData(null);
     }
   }, [isModalVisible]);
-
-  const signOut = () => {
-    dispatch(actions.auth.signOut());
-  };
 
   const onLayoutChange = (nextLayout: Layout) => {
     setSelectedLayout(nextLayout);
@@ -116,59 +136,95 @@ const Profile = ({
     setIsModalVisible(false);
   };
 
+  const onAvatarPressed = async () => {
+    console.log('Avatar pressed');
+    const result = await launchImageLibrary({mediaType: 'photo'});
+    if (result && result.assets && result.assets[0]) {
+      await users.updateUserAvatar(result.assets[0].uri!, accessToken);
+      updateUserData();
+    }
+  };
+
+  const renderDrawer = () => {
+    return (
+      <View style={styles.drawer}>
+        <TouchableOpacity style={styles.drawerButton} onPress={signOut}>
+          <Text style={styles.drawerButtonText}>Sign Out</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   if (!postsData || !userData) {
     return (
-      <>
-        {/* <Button onPress={signOut} label={'Sign out'} /> */}
+      <DrawerLayout
+        ref={drawer}
+        drawerWidth={200}
+        drawerPosition={'right'}
+        drawerType="slide"
+        drawerBackgroundColor="#181a20"
+        renderNavigationView={renderDrawer}>
         <Loader />
-      </>
+      </DrawerLayout>
     );
   }
 
   return (
-    <ScrollView style={styles.rootGrid}>
-      <View style={styles.root}>
-        <UsersModal
-          onUpdateProfileId={onUpdateProfileId}
-          visible={isModalVisible}
-          onModalClose={() => setIsModalVisible(false)}
-          usersData={modalData}
-        />
-        {/* <Button onPress={signOut} label={'Sign out'} /> */}
-        <Header
-          showFollow={showFollow}
-          showFollowers={showFollowers}
-          publicationsCount={postsData.length}
-          username={userData.username}
-          followersCount={userData.subscriberCount}
-          followCount={userData.subscribedCount}
-          userAvatar={
-            'https://klike.net/uploads/posts/2019-03/1551774929_2.jpg'
-          }
-        />
-        <View style={styles.subscribeBtnContainer}>
-          {currentUser.id !== userId && !userData.isSubscribed && (
-            <Button
-              customStyles={styles.subscribeBtn}
-              label="subscribe"
-              onPress={subscribe}
-              isLoading={isLoading}
+    <>
+      <DrawerLayout
+        ref={drawer}
+        drawerWidth={200}
+        drawerPosition={'right'}
+        drawerType="slide"
+        drawerBackgroundColor="#181a20"
+        renderNavigationView={renderDrawer}>
+        <ScrollView style={styles.rootGrid}>
+          <View style={styles.root}>
+            <UsersModal
+              onUpdateProfileId={onUpdateProfileId}
+              visible={isModalVisible}
+              onModalClose={() => setIsModalVisible(false)}
+              usersData={modalData}
             />
-          )}
-        </View>
-        <Control
-          onLayoutChange={onLayoutChange}
-          selectedLayout={selectedLayout}
-        />
-
-        {selectedLayout === Layout.Grid ? (
-          <GridView posts={postsData} />
-        ) : (
-          postsData.map(post => <Post post={post} key={post.id} />)
-        )}
-      </View>
-    </ScrollView>
+            <Header
+              showFollow={showFollow}
+              showFollowers={showFollowers}
+              onAvatarPressed={onAvatarPressed}
+              publicationsCount={postsData.length}
+              username={userData.username}
+              followersCount={userData.subscriberCount}
+              followCount={userData.subscribedCount}
+              userAvatar={userData.avatarUrl}
+            />
+            <View style={styles.subscribeBtnContainer}>
+              {currentUser.id !== userId && !userData.isSubscribed && (
+                <Button
+                  customStyles={styles.subscribeBtn}
+                  label="subscribe"
+                  onPress={subscribe}
+                  isLoading={isLoading}
+                />
+              )}
+            </View>
+            <Control
+              onLayoutChange={onLayoutChange}
+              selectedLayout={selectedLayout}
+            />
+            {postsData.length === 0 && (
+              <Text style={styles.drawerButtonText}>
+                There is no posts yet!
+              </Text>
+            )}
+            {selectedLayout === Layout.Grid ? (
+              <GridView posts={postsData} />
+            ) : (
+              postsData.map(post => <Post post={post} key={post.id} />)
+            )}
+          </View>
+        </ScrollView>
+      </DrawerLayout>
+    </>
   );
 };
 
-export default Profile;
+export default gestureHandlerRootHOC(Profile);
