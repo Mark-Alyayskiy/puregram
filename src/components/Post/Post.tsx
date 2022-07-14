@@ -8,6 +8,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import {posts} from '../../utils/mockPosts';
 import Navigation from '../../pages/Navigation';
 import {useNavigation} from '@react-navigation/core';
+import BottomModal from '../BottomModal/BottomModal';
 
 type Props = {
   post: PostType;
@@ -15,16 +16,23 @@ type Props = {
 
 const Post = ({post}: Props) => {
   const navigation = useNavigation();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const likePost = async id => {
     const res = await posts.getUserPostById(id);
   };
 
-  const openMenu = () => {};
+  const showBottomModal = () => {
+    setIsModalVisible(true);
+  };
 
   return (
     <View style={styles.root}>
       <View style={styles.userHeader}>
+        <BottomModal
+          visible={isModalVisible}
+          onModalClose={() => setIsModalVisible(false)}
+        />
         <TouchableOpacity
           style={styles.user}
           onPress={() => navigation.navigate('Profile', {userId: post.userId})}>
@@ -37,8 +45,10 @@ const Post = ({post}: Props) => {
 
           <Text style={styles.usernameLabel}>{post.username}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.delBtn} onPress={() => openMenu}>
-          <DotsIcon />
+        <TouchableOpacity
+          style={styles.delBtn}
+          onPress={() => showBottomModal()}>
+          <DotsIcon color="#fff" />
         </TouchableOpacity>
         {/* <Modal>
           <View style={styles.rootPostMenu}>

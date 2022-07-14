@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     maxWidth: '100%',
+    borderRadius: 25,
   },
   imageContainer: {
     width: '100%',
