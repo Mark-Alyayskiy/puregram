@@ -1,4 +1,4 @@
-export type User = {
+export type UserType = {
   id: string;
   username: string;
   email: string;
@@ -6,4 +6,9 @@ export type User = {
   subscriberCount?: number;
   subscribedCount?: number;
   isSubscribed?: boolean;
+};
+
+export type SubscriberType = {
+  id: string;
+  user: UserType;
 };

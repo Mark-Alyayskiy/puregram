@@ -1,13 +1,11 @@
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
-
-import {Image} from 'react-native';
+import {View, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
 
 import styles from '../Profile/styles';
 import {useSelector} from 'react-redux';
 import {actions, selectors} from '../../store/ducks';
 import {posts, users} from '../../api';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import Button from '../../components/Button';
 import {Post as PostType} from '../../types/post';
@@ -19,7 +17,7 @@ import Header from './components/Header';
 import Control from './components/Control';
 import {Layout} from './types';
 import GridView from './components/GridView';
-import {User as UserType} from '../../types/user';
+import {SubscriberType, UserType} from '../../types/user';
 import {subscriptions} from '../../api';
 import UsersModal from './components/UsersModal';
 
@@ -27,33 +25,35 @@ const Profile = ({
   route,
   navigation,
 }: NativeStackScreenProps<MainNavigationList, 'Profile'>) => {
-  const isFocused = useIsFocused();
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [userType, setUserType] = useState('subscribers');
-
   const {userId} = route.params;
 
+  const currentUser = useSelector(selectors.auth.selectUser);
+
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [userData, setUserData] = useState(null as null | UserType);
   const [postsData, setPostData] = useState(null as null | PostType[]);
   const [selectedLayout, setSelectedLayout] = useState(Layout.Feed as Layout);
+  const [modalData, setModalData] = useState(null as null | SubscriberType[]);
 
   const getUserById = async () => {
     const res = await users.getUser(userId);
     setUserData(res);
   };
 
-  console.log('userId', userId);
-
-  const currentUser = useSelector(selectors.auth.selectUser);
-
-  console.log('postsData', postsData);
-
   const getUserPosts = async () => {
     const res = await posts.getUserPostsById(userId);
     setPostData(res);
-    console.log('res', res);
+  };
+  const getSubscribed = async () => {
+    return await subscriptions.getSubscribed(userId);
+  };
+
+  const getSubscribers = async () => {
+    return await subscriptions.getSubscribers(userId);
   };
 
   useEffect(() => {
@@ -66,6 +66,23 @@ const Profile = ({
     }
   }, [isFocused]);
 
+  const updateUserData = async () => {
+    setUserData(null);
+    setPostData(null);
+    await getUserById();
+    await getUserPosts();
+  };
+
+  useEffect(() => {
+    updateUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    if (!isModalVisible) {
+      setModalData(null);
+    }
+  }, [isModalVisible]);
+
   const signOut = () => {
     dispatch(actions.auth.signOut());
   };
@@ -73,8 +90,6 @@ const Profile = ({
   const onLayoutChange = (nextLayout: Layout) => {
     setSelectedLayout(nextLayout);
   };
-
-  console.log('userData', userData);
 
   const subscribe = async () => {
     setIsLoading(true);
@@ -84,29 +99,40 @@ const Profile = ({
     console.log('res', res);
   };
 
-  const showFollowers = () => {
-    setUserType('subscribers');
+  const showFollowers = async () => {
     setIsModalVisible(true);
+    const res = await getSubscribers();
+    setModalData(res);
   };
 
-  const showFollow = () => {
-    setUserType('subscribed');
+  const showFollow = async () => {
     setIsModalVisible(true);
+    const res = await getSubscribed();
+    setModalData(res);
+  };
+
+  const onUpdateProfileId = (profileId: string) => {
+    navigation.setParams({userId: profileId});
+    setIsModalVisible(false);
   };
 
   if (!postsData || !userData) {
-    return <Loader />;
+    return (
+      <>
+        {/* <Button onPress={signOut} label={'Sign out'} /> */}
+        <Loader />
+      </>
+    );
   }
 
   return (
     <ScrollView style={styles.rootGrid}>
       <View style={styles.root}>
         <UsersModal
-          navigation={navigation}
-          userType={userType}
+          onUpdateProfileId={onUpdateProfileId}
           visible={isModalVisible}
-          currentUserId={userId}
           onModalClose={() => setIsModalVisible(false)}
+          usersData={modalData}
         />
         {/* <Button onPress={signOut} label={'Sign out'} /> */}
         <Header
