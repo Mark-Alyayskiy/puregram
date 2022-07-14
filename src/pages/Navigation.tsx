@@ -62,76 +62,78 @@ const Navigation = () => {
           />
         </AuthStack.Navigator>
       ) : (
-        <MainStack.Navigator
-          screenOptions={{
-            tabBarStyle: {
-              backgroundColor: '#181a20',
-              borderTopWidth: 1,
-              elevation: 0,
-              shadowOpacity: 0,
-              borderTopColor: '#ff4d67',
-              paddingBottom: 5,
-              height: 55,
-            },
-            headerStyle: {
-              backgroundColor: '#181a20',
-              borderBottomWidth: 1,
-              elevation: 0,
-              shadowOpacity: 0,
-              borderBottomColor: '#ff4d67',
-            },
-            headerTintColor: 'white',
-            tabBarActiveTintColor: '#ff4d67',
-            tabBarLabelStyle: {
-              fontSize: 12,
-            },
-          }}>
-          <MainStack.Screen
-            options={{
-              tabBarIcon: ({focused}) => (
-                <HomeIcon color={focused ? '#ff4d67' : '#fff'} />
-              ),
-            }}
-            name="Home"
-            component={Home}
-          />
-          <MainStack.Screen
-            options={{
-              tabBarIcon: ({focused}) => (
-                <PlusIcon color={focused ? '#ff4d67' : '#fff'} />
-              ),
-            }}
-            name="AddPost"
-            component={AddPost}
-          />
-          <MainStack.Screen
-            options={{
-              tabBarIcon: ({focused}) => (
-                <PersonIcon color={focused ? '#ff4d67' : '#fff'} />
-              ),
-            }}
-            listeners={({navigation}) => ({
-              tabPress: e => {
-                e.preventDefault();
-                navigation.navigate('Profile', {userId: userId});
+        <>
+          <MainStack.Navigator
+            screenOptions={{
+              tabBarStyle: {
+                backgroundColor: '#181a20',
+                borderTopWidth: 1,
+                elevation: 0,
+                shadowOpacity: 0,
+                borderTopColor: '#ff4d67',
+                paddingBottom: 5,
+                height: 55,
               },
-            })}
-            initialParams={{userId}}
-            name="Profile"
-            component={Profile}
-          />
-          <MainStack.Screen
-            options={{
-              tabBarLabel: '',
-              tabBarItemStyle: {
-                position: 'absolute',
+              headerStyle: {
+                backgroundColor: '#181a20',
+                borderBottomWidth: 1,
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomColor: '#ff4d67',
               },
-              tabBarIcon: () => null,
-            }}
-            name="PostEditor"
-            component={PostEditor}
-          />
-        </MainStack.Navigator>
+              headerTintColor: 'white',
+              tabBarActiveTintColor: '#ff4d67',
+              tabBarLabelStyle: {
+                fontSize: 12,
+              },
+            }}>
+            <MainStack.Screen
+              options={{
+                tabBarIcon: ({focused}) => (
+                  <HomeIcon color={focused ? '#ff4d67' : '#fff'} />
+                ),
+              }}
+              name="Home"
+              component={Home}
+            />
+            <MainStack.Screen
+              options={{
+                tabBarIcon: ({focused}) => (
+                  <PlusIcon color={focused ? '#ff4d67' : '#fff'} />
+                ),
+              }}
+              name="AddPost"
+              component={AddPost}
+            />
+            <MainStack.Screen
+              options={{
+                tabBarIcon: ({focused}) => (
+                  <PersonIcon color={focused ? '#ff4d67' : '#fff'} />
+                ),
+              }}
+              listeners={({navigation}) => ({
+                tabPress: e => {
+                  e.preventDefault();
+                  navigation.navigate('Profile', {userId: userId});
+                },
+              })}
+              initialParams={{userId}}
+              name="Profile"
+              component={Profile}
+            />
+            <MainStack.Screen
+              options={{
+                tabBarLabel: '',
+                tabBarItemStyle: {
+                  position: 'absolute',
+                },
+                tabBarIcon: () => null,
+              }}
+              name="PostEditor"
+              component={PostEditor}
+            />
+          </MainStack.Navigator>
+        </>
       )}
     </NavigationContainer>
   );

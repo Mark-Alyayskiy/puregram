@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  TouchableOpacityBase,
-  View,
-} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import styles from '../styles';
-import {Layout} from '../types';
 
 type Props = {
   username: string;
@@ -17,6 +10,7 @@ type Props = {
   userAvatar: string;
   showFollowers: () => void;
   showFollow: () => void;
+  onAvatarPressed: () => void;
 };
 
 const Header = ({
@@ -27,10 +21,11 @@ const Header = ({
   followersCount,
   followCount,
   userAvatar,
+  onAvatarPressed,
 }: Props) => {
   return (
     <View style={styles.rootHeader}>
-      <View style={styles.imageTitle}>
+      <TouchableOpacity onPress={onAvatarPressed} style={styles.imageTitle}>
         <Image
           style={styles.userAvatar}
           source={{
@@ -38,7 +33,7 @@ const Header = ({
           }}
         />
         <Text style={styles.userDataText}>{username}</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.userData}>
         <View style={styles.userDataItems}>
           <Text style={styles.userDataText}>{publicationsCount} </Text>

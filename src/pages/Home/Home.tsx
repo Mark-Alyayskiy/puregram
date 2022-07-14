@@ -1,4 +1,4 @@
-import {ScrollView} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import Button from '../../components/Button';
@@ -29,6 +29,9 @@ const Home = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.body}>
+      {data && data.length === 0 && (
+        <Text style={styles.noPostsText}>There is no posts yet!</Text>
+      )}
       {data ? data.map(post => <Post post={post} key={post.id} />) : <Loader />}
     </ScrollView>
   );

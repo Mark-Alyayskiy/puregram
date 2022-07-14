@@ -39,7 +39,7 @@ const Post = ({post}: Props) => {
           <Image
             style={styles.userAvatar}
             source={{
-              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvmgRdgDaYNygYqSk_zJ4kUC596fsC8yy45g&usqp=CAU',
+              uri: post.avatarUrl,
             }}
           />
 

@@ -1,12 +1,12 @@
 import {createAction, createReducer} from '@reduxjs/toolkit';
 import {RootState} from '..';
-import {User} from '../../types/user';
+import {UserType} from '../../types/user';
 
 const setAccessToken = createAction<string>('auth/setAccesToken');
-const setUser = createAction<User>('auth/setUser');
+const setUser = createAction<UserType>('auth/setUser');
 const signOut = createAction('auth/signOut');
 
-const initialState = {user: {} as User};
+const initialState = {user: {} as UserType};
 
 export const reducer = createReducer(initialState, builder => {
   builder.addCase(setAccessToken, (state, action) => {
