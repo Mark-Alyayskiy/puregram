@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  userHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   user: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -47,12 +52,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 10,
   },
+  delBtn: {
+    marginHorizontal: 15,
+  },
   usernameLabel: {
     color: '#fff',
   },
   label: {
     color: '#fff',
     paddingLeft: 5,
+  },
+  rootPostMenu: {
+    width: 400,
   },
 });
 
