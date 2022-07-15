@@ -9,6 +9,7 @@ export const getUser = async (id: string) => {
 
 export const updateUserAvatar = async (imageUrl: string, token: string) => {
   const newImageUri = imageUrl.split('file:/').join('');
+  console.log('imageUrl', imageUrl);
   const formData = new FormData();
   formData.append('image', {
     type: 'image/jpg',

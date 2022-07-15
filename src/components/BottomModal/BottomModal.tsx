@@ -8,18 +8,17 @@ import ControlButton from '../ControlButton';
 
 type Props = {
   visible: boolean;
-  children: any;
   onModalClose: () => void;
   userId: string;
 };
 
 const BottomModal = ({visible, onModalClose, userId}: Props) => {
   const currentUser = useSelector(selectors.auth.selectUser);
-  // const {userId} = route.params;
 
   return (
-    <Modal visible={visible} transparent={true} animationType="slide">
-      <View style={styles.backdrop}>
+    <React.Fragment>
+      <Modal visible={visible} transparent={true} animationType="slide">
+        <TouchableOpacity style={styles.backdrop} onPress={onModalClose} />
         <View style={styles.modal}>
           <View style={styles.buttonModal}>
             <ControlButton
@@ -27,12 +26,13 @@ const BottomModal = ({visible, onModalClose, userId}: Props) => {
               onPress={onModalClose}
               label={'Hide post from feed'}
             />
-            {/* {currentUser.id !== userId && ( */}
-            <ControlButton
-              customStyles={styles.buttonClose}
-              onPress={onModalClose}
-              label={'Delete post'}
-            />
+            {currentUser.id === userId && (
+              <ControlButton
+                customStyles={styles.buttonClose}
+                onPress={onModalClose}
+                label={'Delete post'}
+              />
+            )}
           </View>
           <View style={styles.buttonModalClose}>
             <ControlButton
@@ -42,8 +42,8 @@ const BottomModal = ({visible, onModalClose, userId}: Props) => {
             />
           </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </React.Fragment>
   );
 };
 

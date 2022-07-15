@@ -42,7 +42,7 @@ const AddPost = ({
   const devices = useCameraDevices();
   const device = devices.back;
 
-  if ((device === null || device === undefined) && !isCameraLoaded) {
+  if (device === null || device === undefined || !isCameraLoaded) {
     return <Loader />;
   }
 

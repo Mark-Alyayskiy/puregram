@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   modal: {
     backgroundColor: '#181a20',
     borderRadius: 10,
-
+    paddingTop: 30,
     height: '100%',
   },
   userModalContainer: {

@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import React from 'react';
 import {SubscriberType} from '../../../types/user';
-import Button from '../../../components/Button';
 import styles from '../styles';
 import Loader from '../../../components/Loader';
+import ControlButton from '../../../components/ControlButton';
 
 type Props = {
   visible: boolean;
@@ -28,6 +28,9 @@ const UsersModal = ({
   return (
     <Modal visible={visible} animationType="slide">
       <ScrollView contentContainerStyle={styles.modal}>
+        {usersData && usersData.length === 0 && (
+          <Text style={styles.drawerButtonText}>There is no users yet!</Text>
+        )}
         {usersData ? (
           usersData.map(subscriber => (
             <TouchableOpacity
@@ -37,7 +40,7 @@ const UsersModal = ({
               <Image
                 style={styles.userModalAvatar}
                 source={{
-                  uri: 'https://www.postavy.cz/foto/flesh-balls-foto.jpg',
+                  uri: subscriber.user.avatarUrl,
                 }}
               />
               <Text style={styles.userNameText}>
@@ -50,7 +53,7 @@ const UsersModal = ({
         )}
 
         <View style={styles.buttonCloseContainer}>
-          <Button onPress={onModalClose} label={'Close'} />
+          <ControlButton onPress={onModalClose} label={'Close'} />
         </View>
       </ScrollView>
     </Modal>

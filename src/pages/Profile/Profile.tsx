@@ -7,8 +7,6 @@ import {actions, selectors} from '../../store/ducks';
 import {posts, users} from '../../api';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import Button from '../../components/Button';
-import ControlButton from '../../components/ControlButton';
 import {Post as PostType} from '../../types/post';
 import Loader from '../../components/Loader';
 import Post from '../../components/Post';
@@ -27,6 +25,7 @@ import {
 } from 'react-native-gesture-handler';
 import {DotsIcon} from '../../assets/svg';
 import {launchImageLibrary} from 'react-native-image-picker';
+import FadeInView from '../../components/FadeInView';
 
 const Profile = ({
   route,
@@ -85,6 +84,7 @@ const Profile = ({
     } else {
       setPostData(null);
       setUserData(null);
+      drawer.current.closeDrawer();
     }
   }, [isFocused]);
 
@@ -145,7 +145,10 @@ const Profile = ({
   };
 
   const onAvatarPressed = async () => {
-    console.log('Avatar pressed');
+    if (currentUser.id !== userId) {
+      return;
+    }
+
     const result = await launchImageLibrary({mediaType: 'photo'});
     if (result && result.assets && result.assets[0]) {
       await users.updateUserAvatar(result.assets[0].uri!, accessToken);
@@ -211,22 +214,6 @@ const Profile = ({
               }
               isUnsubscribeButtonShowed={!!userData.isSubscribed}
             />
-            {/* <View style={styles.subscribeBtnContainer}>
-              {currentUser.id !== userId && !userData.isSubscribed && (
-                <ControlButton
-                  label="subscribe"
-                  onPress={subscribe}
-                  isLoading={isLoading}
-                />
-              )}
-              {userData.isSubscribed && (
-                <ControlButton
-                  label="unsubscribe"
-                  onPress={unsubscribe}
-                  isLoading={isLoading}
-                />
-              )}
-            </View> */}
             <Control
               onLayoutChange={onLayoutChange}
               selectedLayout={selectedLayout}

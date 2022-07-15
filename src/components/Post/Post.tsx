@@ -1,4 +1,4 @@
-import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {DotsIcon, HeartIcon} from '../../assets/svg';
 import styles from '../Post/styles';
@@ -6,7 +6,6 @@ import {Post as PostType} from '../../types/post';
 import moment from 'moment';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-import Navigation from '../../pages/Navigation';
 import {useNavigation} from '@react-navigation/core';
 import BottomModal from '../BottomModal/BottomModal';
 import {posts} from '../../api';

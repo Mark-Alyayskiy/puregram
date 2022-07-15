@@ -69,14 +69,14 @@ const Header = ({
         </View>
         {isSubscribeButtonShowed && (
           <ControlButton
-            label="subscribe"
+            label="Subscribe"
             onPress={subscribe}
             isLoading={isButtonLoading}
           />
         )}
         {isUnsubscribeButtonShowed && (
           <ControlButton
-            label="unsubscribe"
+            label="Unsubscribe"
             onPress={unsubscribe}
             isLoading={isButtonLoading}
           />
