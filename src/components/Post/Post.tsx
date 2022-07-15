@@ -30,6 +30,7 @@ const Post = ({post}: Props) => {
     <View style={styles.root}>
       <View style={styles.userHeader}>
         <BottomModal
+          userId={post.userId}
           visible={isModalVisible}
           onModalClose={() => setIsModalVisible(false)}
         />

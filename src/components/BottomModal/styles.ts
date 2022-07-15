@@ -2,6 +2,8 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   modal: {
+    position: 'absolute',
+    bottom: 0,
     width: '98%',
     backgroundColor: '#181a20',
     borderRadius: 15,

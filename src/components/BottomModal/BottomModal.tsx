@@ -9,9 +9,10 @@ type Props = {
   visible: boolean;
   children: any;
   onModalClose: () => void;
+  userId: string;
 };
 
-const BottomModal = ({visible, route, onModalClose}: Props) => {
+const BottomModal = ({visible, onModalClose, userId}: Props) => {
   const currentUser = useSelector(selectors.auth.selectUser);
   // const {userId} = route.params;
 
@@ -24,13 +25,13 @@ const BottomModal = ({visible, route, onModalClose}: Props) => {
             onPress={onModalClose}
             label={'Hide post from feed'}
           />
-          {/* {currentUser.id !== userId && ( */}
-          <Button
-            customStyles={styles.buttonClose}
-            onPress={onModalClose}
-            label={'Delete post'}
-          />
-          {/* )} */}
+          {currentUser.id === userId && (
+            <Button
+              customStyles={styles.buttonClose}
+              onPress={onModalClose}
+              label={'Delete post'}
+            />
+          )}
 
           {/* <TouchableOpacity onPress={onModalClose}>
             <Text>Close</Text>
