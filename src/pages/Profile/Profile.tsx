@@ -8,6 +8,7 @@ import {posts, users} from '../../api';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import Button from '../../components/Button';
+import ControlButton from '../../components/ControlButton';
 import {Post as PostType} from '../../types/post';
 import Loader from '../../components/Loader';
 import Post from '../../components/Post';
@@ -68,6 +69,13 @@ const Profile = ({
 
   const getSubscribers = async () => {
     return await subscriptions.getSubscribers(userId);
+  };
+
+  const unsubscribe = async () => {
+    setIsLoading(true);
+    await subscriptions.unsubscribe(userId);
+    await getUserById();
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -195,17 +203,30 @@ const Profile = ({
               followersCount={userData.subscriberCount}
               followCount={userData.subscribedCount}
               userAvatar={userData.avatarUrl}
+              subscribe={subscribe}
+              unsubscribe={unsubscribe}
+              isButtonLoading={isLoading}
+              isSubscribeButtonShowed={
+                currentUser.id !== userId && !userData.isSubscribed
+              }
+              isUnsubscribeButtonShowed={!!userData.isSubscribed}
             />
-            <View style={styles.subscribeBtnContainer}>
+            {/* <View style={styles.subscribeBtnContainer}>
               {currentUser.id !== userId && !userData.isSubscribed && (
-                <Button
-                  customStyles={styles.subscribeBtn}
+                <ControlButton
                   label="subscribe"
                   onPress={subscribe}
                   isLoading={isLoading}
                 />
               )}
-            </View>
+              {userData.isSubscribed && (
+                <ControlButton
+                  label="unsubscribe"
+                  onPress={unsubscribe}
+                  isLoading={isLoading}
+                />
+              )}
+            </View> */}
             <Control
               onLayoutChange={onLayoutChange}
               selectedLayout={selectedLayout}

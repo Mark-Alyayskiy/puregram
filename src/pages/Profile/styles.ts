@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   rootHeader: {
+    display: 'flex',
     flexDirection: 'row',
   },
   imageTitle: {
@@ -125,6 +126,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     textAlign: 'center',
+  },
+  userHeaderContainer: {
+    alignSelf: 'center',
+  },
+  infoUser: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
 });
 

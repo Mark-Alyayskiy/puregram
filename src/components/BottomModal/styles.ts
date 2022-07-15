@@ -2,11 +2,12 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   modal: {
+    position: 'absolute',
+    bottom: 0,
     width: '98%',
     backgroundColor: '#181a20',
     borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
+
     paddingVertical: 15,
     marginVertical: 8,
   },
@@ -19,6 +20,13 @@ const styles = StyleSheet.create({
   buttonClose: {
     width: '95%',
     height: 50,
+  },
+  buttonModal: {
+    borderRadius: 50,
+  },
+  buttonModalClose: {
+    borderRadius: 50,
+    paddingTop: 20,
   },
 });
 
