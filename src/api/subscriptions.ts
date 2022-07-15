@@ -16,3 +16,8 @@ export const getSubscribed = async (id: string) => {
   const res = await axios.get(`${BASE_URL}/subscriptions/subscription/${id}`);
   return res.data;
 };
+
+export const unsubscribe = async (id: string) => {
+  const res = await axios.delete(`${BASE_URL}/subscriptions/${id}`);
+  return res.data;
+};
