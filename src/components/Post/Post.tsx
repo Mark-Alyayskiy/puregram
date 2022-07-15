@@ -1,14 +1,16 @@
 import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {DotsIcon, HeartIcon} from '../../assets/svg';
 import styles from '../Post/styles';
 import {Post as PostType} from '../../types/post';
 import moment from 'moment';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import {posts} from '../../utils/mockPosts';
+
 import Navigation from '../../pages/Navigation';
 import {useNavigation} from '@react-navigation/core';
 import BottomModal from '../BottomModal/BottomModal';
+import {posts} from '../../api';
+import _ from 'lodash';
 
 type Props = {
   post: PostType;
@@ -17,10 +19,54 @@ type Props = {
 const Post = ({post}: Props) => {
   const navigation = useNavigation();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [postData, setPostData] = useState(post);
+  const [initialIsPostLikedByUser, setInitialIsPostLikedByUser] = useState(
+    post.isPostLikedByUser,
+  );
 
-  const likePost = async id => {
-    const res = await posts.getUserPostById(id);
+  useEffect(() => {
+    setPostData(post);
+  }, [post]);
+
+  const handleLikePost = async () => {
+    if (!postData.isPostLikedByUser) {
+      console.log('call++');
+      handleDebounceCondition(true);
+      setPostData({
+        ...postData,
+        likesCount: ++post.likesCount,
+        isPostLikedByUser: true,
+      });
+    } else {
+      console.log('call--');
+      handleDebounceCondition(false);
+      setPostData({
+        ...postData,
+        likesCount: --post.likesCount,
+        isPostLikedByUser: false,
+      });
+    }
   };
+
+  const likePost = async () => {
+    const res = await posts.like(post.id);
+    setInitialIsPostLikedByUser(!res.affected);
+    console.log('res', res);
+  };
+
+  const handleDebounceCondition = useCallback(
+    _.debounce((isPostLikedByUser: boolean) => {
+      console.log(
+        'isPostLikedByUser',
+        isPostLikedByUser,
+        initialIsPostLikedByUser,
+      );
+      if (initialIsPostLikedByUser !== isPostLikedByUser) {
+        likePost();
+      }
+    }, 500),
+    [initialIsPostLikedByUser],
+  );
 
   const showBottomModal = () => {
     setIsModalVisible(true);
@@ -30,32 +76,29 @@ const Post = ({post}: Props) => {
     <View style={styles.root}>
       <View style={styles.userHeader}>
         <BottomModal
-          userId={post.userId}
+          userId={postData.userId}
           visible={isModalVisible}
           onModalClose={() => setIsModalVisible(false)}
         />
         <TouchableOpacity
           style={styles.user}
-          onPress={() => navigation.navigate('Profile', {userId: post.userId})}>
+          onPress={() =>
+            navigation.navigate('Profile', {userId: postData.userId})
+          }>
           <Image
             style={styles.userAvatar}
             source={{
-              uri: post.avatarUrl,
+              uri: postData.avatarUrl,
             }}
           />
 
-          <Text style={styles.usernameLabel}>{post.username}</Text>
+          <Text style={styles.usernameLabel}>{postData.username}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.delBtn}
           onPress={() => showBottomModal()}>
-          <DotsIcon color="#fff" />
+          <DotsIcon />
         </TouchableOpacity>
-        {/* <Modal>
-          <View style={styles.rootPostMenu}>
-            <Text>2322</Text>
-          </View>
-        </Modal> */}
       </View>
       <View style={styles.imageContainer}>
         <ImageViewer
@@ -64,20 +107,20 @@ const Post = ({post}: Props) => {
           maxOverflow={0}
           flipThreshold={0}
           renderHeader={undefined}
-          imageUrls={[{url: post.imageUrl}]}
+          imageUrls={[{url: postData.imageUrl}]}
         />
       </View>
       <View style={styles.control}>
         <View style={styles.likes}>
-          <TouchableOpacity onPress={() => likePost}>
-            <HeartIcon />
+          <TouchableOpacity onPress={handleLikePost}>
+            <HeartIcon isActive={postData.isPostLikedByUser} />
           </TouchableOpacity>
 
-          <Text style={styles.likesCount}>{post.likesCount}</Text>
-          <Text style={styles.label}>{post.label}</Text>
+          <Text style={styles.likesCount}>{postData.likesCount}</Text>
+          <Text style={styles.label}>{postData.label}</Text>
         </View>
         <Text style={styles.timestamp}>
-          {moment(post.created_at).format('MMMM Do YYYY, h:mm')}
+          {moment(postData.created_at).format('MMMM Do YYYY, h:mm')}
         </Text>
       </View>
     </View>
