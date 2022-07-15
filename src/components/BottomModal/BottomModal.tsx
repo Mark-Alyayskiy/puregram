@@ -4,6 +4,7 @@ import styles from './styles';
 import Button from '../Button';
 import {useSelector} from 'react-redux';
 import {selectors} from '../../store/ducks';
+import ControlButton from '../ControlButton';
 
 type Props = {
   visible: boolean;
@@ -20,29 +21,26 @@ const BottomModal = ({visible, onModalClose, userId}: Props) => {
     <Modal visible={visible} transparent={true} animationType="slide">
       <View style={styles.backdrop}>
         <View style={styles.modal}>
-          <Button
-            customStyles={styles.buttonClose}
-            onPress={onModalClose}
-            label={'Hide post from feed'}
-          />
-          {currentUser.id === userId && (
-            <Button
+          <View style={styles.buttonModal}>
+            <ControlButton
+              customStyles={styles.buttonClose}
+              onPress={onModalClose}
+              label={'Hide post from feed'}
+            />
+            {/* {currentUser.id !== userId && ( */}
+            <ControlButton
               customStyles={styles.buttonClose}
               onPress={onModalClose}
               label={'Delete post'}
             />
-          )}
-
-          {/* <TouchableOpacity onPress={onModalClose}>
-            <Text>Close</Text>
-          </TouchableOpacity> */}
-        </View>
-        <View style={styles.modal}>
-          <Button
-            customStyles={styles.buttonClose}
-            onPress={onModalClose}
-            label={'Close'}
-          />
+          </View>
+          <View style={styles.buttonModalClose}>
+            <ControlButton
+              customStyles={styles.buttonClose}
+              onPress={onModalClose}
+              label={'Close'}
+            />
+          </View>
         </View>
       </View>
     </Modal>
