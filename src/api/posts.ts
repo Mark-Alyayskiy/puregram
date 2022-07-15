@@ -13,7 +13,6 @@ export const getUserPostsById = async (id: string) => {
 
 export const like = async (id: string) => {
   const res = await axios.post(`${BASE_URL}/likes/${id}`);
-  console.log('res.data', res.data);
   return res.data;
 };
 

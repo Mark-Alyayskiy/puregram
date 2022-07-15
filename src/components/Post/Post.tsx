@@ -1,5 +1,5 @@
 import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {DotsIcon, HeartIcon} from '../../assets/svg';
 import styles from '../Post/styles';
 import {Post as PostType} from '../../types/post';
@@ -20,32 +20,53 @@ const Post = ({post}: Props) => {
   const navigation = useNavigation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postData, setPostData] = useState(post);
+  const [initialIsPostLikedByUser, setInitialIsPostLikedByUser] = useState(
+    post.isPostLikedByUser,
+  );
 
-  const likePost = async () => {
-    if (!postData.isPostLikeByUser) {
+  useEffect(() => {
+    setPostData(post);
+  }, [post]);
+
+  const handleLikePost = async () => {
+    if (!postData.isPostLikedByUser) {
+      console.log('call++');
+      handleDebounceCondition(true);
       setPostData({
         ...postData,
-        likesCount: post.likesCount++,
-        isPostLikeByUser: true,
+        likesCount: ++post.likesCount,
+        isPostLikedByUser: true,
       });
     } else {
+      console.log('call--');
+      handleDebounceCondition(false);
       setPostData({
         ...postData,
-        likesCount: post.likesCount--,
-        isPostLikeByUser: false,
+        likesCount: --post.likesCount,
+        isPostLikedByUser: false,
       });
     }
-    _.debounce(await posts.like(post.id), 1000);
   };
 
-  const onLikePressed = useCallback(_.debounce(likePost, 1000), []);
+  const likePost = async () => {
+    const res = await posts.like(post.id);
+    setInitialIsPostLikedByUser(!res.affected);
+    console.log('res', res);
+  };
 
-  // const getSinglePost = async () => {
-  //   const res = await posts.getSinglePost(post.id);
-  //   setPostData(res);
-  // };
-
-  console.log('postData', postData);
+  const handleDebounceCondition = useCallback(
+    _.debounce((isPostLikedByUser: boolean) => {
+      console.log(
+        'isPostLikedByUser',
+        isPostLikedByUser,
+        initialIsPostLikedByUser,
+      );
+      if (initialIsPostLikedByUser !== isPostLikedByUser) {
+        likePost();
+      }
+    }, 500),
+    [initialIsPostLikedByUser],
+  );
 
   const showBottomModal = () => {
     setIsModalVisible(true);
@@ -76,13 +97,8 @@ const Post = ({post}: Props) => {
         <TouchableOpacity
           style={styles.delBtn}
           onPress={() => showBottomModal()}>
-          <DotsIcon color="#fff" />
+          <DotsIcon />
         </TouchableOpacity>
-        {/* <Modal>
-          <View style={styles.rootPostMenu}>
-            <Text>2322</Text>
-          </View>
-        </Modal> */}
       </View>
       <View style={styles.imageContainer}>
         <ImageViewer
@@ -96,8 +112,8 @@ const Post = ({post}: Props) => {
       </View>
       <View style={styles.control}>
         <View style={styles.likes}>
-          <TouchableOpacity onPress={likePost}>
-            <HeartIcon />
+          <TouchableOpacity onPress={handleLikePost}>
+            <HeartIcon isActive={postData.isPostLikedByUser} />
           </TouchableOpacity>
 
           <Text style={styles.likesCount}>{postData.likesCount}</Text>

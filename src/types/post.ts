@@ -7,5 +7,5 @@ export type Post = {
   avatarUrl: string;
   created_at: string;
   label: string;
-  isPostLikeByUser: boolean;
+  isPostLikedByUser: boolean;
 };
