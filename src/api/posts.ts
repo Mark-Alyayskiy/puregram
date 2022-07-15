@@ -11,6 +11,18 @@ export const getUserPostsById = async (id: string) => {
   return res.data;
 };
 
+export const like = async (id: string) => {
+  const res = await axios.post(`${BASE_URL}/likes/${id}`);
+  console.log('res.data', res.data);
+  return res.data;
+};
+
+export const getSinglePost = async (id: string) => {
+  const res = await axios.get(`${BASE_URL}/posts/${id}`);
+
+  return res.data;
+};
+
 export const addPost = async (
   label: string,
   imageUrl: string,
