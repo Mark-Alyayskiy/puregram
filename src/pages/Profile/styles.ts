@@ -135,6 +135,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
   },
+  arrowBackIcon: {
+    marginHorizontal: 15,
+  },
 });
 
 export default styles;

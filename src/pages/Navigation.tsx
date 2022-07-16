@@ -13,6 +13,7 @@ import {HomeIcon, PersonIcon, PlusIcon} from '../assets/svg';
 import Profile from './Profile';
 import axios from 'axios';
 import PostEditor from './PostEditor';
+import PostView from './Home/PostView';
 
 const AuthStack = createNativeStackNavigator();
 const MainStack = createBottomTabNavigator();
@@ -143,6 +144,17 @@ const Navigation = () => {
               }}
               name="PostEditor"
               component={PostEditor}
+            />
+            <MainStack.Screen
+              options={{
+                tabBarLabel: '',
+                tabBarItemStyle: {
+                  position: 'absolute',
+                },
+                tabBarIcon: () => null,
+              }}
+              name="PostView"
+              component={PostView}
             />
           </MainStack.Navigator>
         </>

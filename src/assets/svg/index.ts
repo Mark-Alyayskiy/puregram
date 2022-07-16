@@ -11,3 +11,5 @@ export {default as GreedIcon} from './Lattice';
 export {default as FeedIcon} from './VerticalLattice';
 export {default as DeleteIcon} from './DeleteIcon';
 export {default as DotsIcon} from './DotsIcon';
+export {default as ArrowBackIcon} from './ArrowBackIcon';
+export {default as MessageIcon} from './MessageIcon';
