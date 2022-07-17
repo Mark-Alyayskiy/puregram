@@ -39,7 +39,7 @@ const Input = ({
 
   return (
     <View style={[styles.inputContainer, customContainerStyles]}>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <View>
         <View style={styles.image}>{Icon}</View>
 

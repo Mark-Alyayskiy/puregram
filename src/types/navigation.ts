@@ -1,3 +1,5 @@
+import {Post} from './post';
+
 export type AuthNavigationList = {Auth: undefined; Home: undefined};
 
 export type MainNavigationList = {
@@ -5,4 +7,5 @@ export type MainNavigationList = {
   Profile: {userId: string};
   AddPost: undefined;
   PostEditor: {imageUrl: string};
+  PostView: {post: Post};
 };

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {BASE_URL} from '.';
 
-export const getPosts = async () => {
-  const res = await axios.get(`${BASE_URL}/posts`);
+export const getPosts = async (cursor: number) => {
+  const res = await axios.post(`${BASE_URL}/posts`, {cursor});
   return res.data;
 };
 
@@ -22,6 +22,12 @@ export const getSinglePost = async (id: string) => {
   return res.data;
 };
 
+export const getComments = async (id: string) => {
+  const res = await axios.get(`${BASE_URL}/posts/comments/${id}`);
+
+  return res.data;
+};
+
 export const addPost = async (
   label: string,
   imageUrl: string,
@@ -36,7 +42,7 @@ export const addPost = async (
     uri: 'file://' + imageUrl,
   });
 
-  return await fetch(`${BASE_URL}/posts`, {
+  return await fetch(`${BASE_URL}/posts/create`, {
     method: 'post',
     headers: {
       Accept: 'application/json',

@@ -8,4 +8,5 @@ export type Post = {
   created_at: string;
   label: string;
   isPostLikedByUser: boolean;
+  commentsCount?: number;
 };

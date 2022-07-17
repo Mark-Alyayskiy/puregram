@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   root: {
     height: 400,
     width: '100%',
-    flex: 1,
+    backgroundColor: '#181a20',
     maxWidth: '100%',
     borderRadius: 25,
   },
@@ -28,10 +28,11 @@ const styles = StyleSheet.create({
   },
   likesCount: {
     color: '#fff',
-    marginLeft: 5,
+    marginHorizontal: 4,
   },
   timestamp: {
-    color: '#fff',
+    color: '#8f9091',
+    fontSize: 12,
   },
   likes: {
     flexDirection: 'row',
