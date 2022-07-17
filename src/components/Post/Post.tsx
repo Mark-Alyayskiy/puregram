@@ -1,6 +1,6 @@
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {DotsIcon, HeartIcon} from '../../assets/svg';
+import {DotsIcon, HeartIcon, MessageIcon} from '../../assets/svg';
 import styles from '../Post/styles';
 import {Post as PostType} from '../../types/post';
 import moment from 'moment';
@@ -118,6 +118,8 @@ const Post = ({post}: Props) => {
             </TouchableOpacity>
 
             <Text style={styles.likesCount}>{postData.likesCount}</Text>
+            <MessageIcon />
+            <Text style={styles.likesCount}>{postData.commentsCount}</Text>
             <Text style={styles.label}>{postData.label}</Text>
           </View>
           <Text style={styles.timestamp}>

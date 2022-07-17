@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: '100%',
     backgroundColor: '#181a20',
-    alignItems: 'center',
+    alignItems: 'stretch',
     paddingTop: 10,
   },
   noPostsText: {

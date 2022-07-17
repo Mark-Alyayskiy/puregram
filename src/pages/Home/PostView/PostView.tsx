@@ -1,11 +1,7 @@
-import {Text, TouchableOpacity, TouchableOpacityBase, View} from 'react-native';
-import React, {Fragment, useEffect, useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import React, {Fragment, useEffect, useLayoutEffect, useState} from 'react';
 import styles from './styles';
-import {Post as PostType} from '../../types/post';
-import {
-  NativeStackHeaderProps,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {MainNavigationList} from '../../../types/navigation';
 import Post from '../../../components/Post';
 import Comment from '../../../components/Comment';
@@ -13,27 +9,31 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {Field, Form} from 'react-final-form';
 import Input from '../../../components/Input';
 import {ArrowBackIcon} from '../../../assets/svg';
-import {comment, posts as postsApi} from '../../../api';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {comment as commentApi, posts as postsApi} from '../../../api';
+import {useIsFocused} from '@react-navigation/native';
 
 import {CommentType} from '../../../types/comment';
 import Loader from '../../../components/Loader';
-// import Comment from '../../../components/Comment/comment';
 
 const PostView = ({
   route,
   navigation,
 }: NativeStackScreenProps<MainNavigationList, 'PostView'>) => {
   const {post} = route.params;
-  console.log('post', post);
 
   const [commentsData, setCommentsData] = useState(
     null as null | CommentType[],
   );
   const isFocused = useIsFocused();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Post',
+    });
+  }, [navigation]);
+
   const onSubmit = async (values: {commentText: string}) => {
-    const res = await comment.addComment(values.commentText, post.id);
+    await commentApi.addComment(values.commentText, post.id);
     getComments();
   };
 
@@ -54,7 +54,7 @@ const PostView = ({
 
   return (
     <Fragment>
-      <ScrollView contentContainerStyle={styles.rootScroll}>
+      <ScrollView contentContainerStyle={{minHeight: '100%'}}>
         <View style={styles.root}>
           <Post post={post} />
           {commentsData ? (
@@ -79,16 +79,15 @@ const PostView = ({
         render={({handleSubmit, form}) => (
           <View style={styles.inputContainerWrapper}>
             <Field
-              customContainerStyles={styles.inputContainer}
               customInputStyle={styles.input}
               name="commentText"
               placeholder="Your comment"
               component={Input}
             />
             <TouchableOpacity
-              onPress={(e: any) => handleSubmit(e).then(() => form.reset())}
+              onPress={(e: any) => handleSubmit(e)!.then(() => form.reset())}
               style={styles.onSubmitButton}>
-              <ArrowBackIcon />
+              <ArrowBackIcon width={30} height={30} />
             </TouchableOpacity>
           </View>
         )}

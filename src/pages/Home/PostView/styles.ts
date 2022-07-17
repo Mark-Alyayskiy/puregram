@@ -1,6 +1,4 @@
-import {Dimensions, StyleSheet} from 'react-native';
-
-const win = Dimensions.get('window');
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   root: {
@@ -8,7 +6,7 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: '100%',
     backgroundColor: '#181a20',
-    paddingBottom: 80,
+    paddingBottom: 50,
     justifyContent: 'flex-start',
   },
 
@@ -17,14 +15,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     bottom: 0,
-
+    paddingTop: 5,
     backgroundColor: '#181a20',
   },
   input: {
     height: 40,
-  },
-  rootScroll: {
-    // paddingBottom: 30,
+    margin: 0,
   },
   onSubmitButton: {
     transform: [{rotate: '180deg'}],
