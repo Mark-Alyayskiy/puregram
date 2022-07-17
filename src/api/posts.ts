@@ -22,6 +22,12 @@ export const getSinglePost = async (id: string) => {
   return res.data;
 };
 
+export const getComments = async (id: string) => {
+  const res = await axios.get(`${BASE_URL}/posts/comments/${id}`);
+
+  return res.data;
+};
+
 export const addPost = async (
   label: string,
   imageUrl: string,

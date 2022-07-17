@@ -4,4 +4,5 @@ export type CommentType = {
   id: string;
   commentText: string;
   created_at: string;
+  userId: string;
 };

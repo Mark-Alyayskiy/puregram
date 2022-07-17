@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   root: {
     height: 400,
     width: '100%',
-    flex: 1,
+
     maxWidth: '100%',
     borderRadius: 25,
   },
