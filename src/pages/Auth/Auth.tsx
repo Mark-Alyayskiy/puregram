@@ -12,7 +12,9 @@ import ErrorModal from '../../components/ErrorModal';
 import {useDispatch} from 'react-redux';
 import {actions} from '../../store/ducks';
 
-const Auth = ({navigation}: NativeStackScreenProps<AuthNavigationList, 'Auth'>) => {
+const Auth = ({
+  navigation,
+}: NativeStackScreenProps<AuthNavigationList, 'Auth'>) => {
   const [isSignIn, setIsSignIn] = useState(true);
   const dispatch = useDispatch();
 
