@@ -1,16 +1,18 @@
-import {View, Image, Text, ScrollView} from 'react-native';
-import React, {useState} from 'react';
+import {View, Image, Text, ScrollView, TouchableOpacity} from 'react-native';
+import React, {useLayoutEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {MainNavigationList} from '../../types/navigation';
 import styles from './styles';
 import {Form, Field} from 'react-final-form';
 import Input from '../../components/Input';
-import {required} from '../../utils/validation';
+import {composeValidators, maxLength, required} from '../../utils/validation';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Button from '../../components/Button';
 import {posts} from '../../api';
 import {useSelector} from 'react-redux';
 import {selectors} from '../../store/ducks';
+import {throttle} from 'lodash';
+import {ArrowBackIcon} from '../../assets/svg';
 
 const PostEditor = ({
   route,
@@ -27,6 +29,24 @@ const PostEditor = ({
     navigation.navigate('Home');
   };
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Edit your post',
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={throttle(
+            () => {
+              navigation.goBack();
+            },
+            500,
+            {trailing: false},
+          )}>
+          <ArrowBackIcon />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <ScrollView contentContainerStyle={styles.root}>
       <KeyboardAwareScrollView>
@@ -41,7 +61,7 @@ const PostEditor = ({
               <Field
                 label="Post description"
                 name="description"
-                validate={required}
+                validate={composeValidators(required, maxLength(94))}
                 component={Input}
                 placeholder="Description..."
               />

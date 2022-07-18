@@ -4,11 +4,12 @@ const win = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   root: {
-    height: 400,
+    minHeight: 400,
     width: '100%',
     backgroundColor: '#181a20',
     maxWidth: '100%',
     borderRadius: 25,
+    marginBottom: 10,
   },
   imageContainer: {
     width: '100%',
@@ -59,6 +60,9 @@ const styles = StyleSheet.create({
   },
   usernameLabel: {
     color: '#fff',
+    marginRight: 10,
+    fontWeight: 'bold',
+    fontSize: 15,
   },
   label: {
     color: '#fff',
@@ -66,6 +70,11 @@ const styles = StyleSheet.create({
   },
   rootPostMenu: {
     width: 400,
+  },
+  postFooter: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    marginTop: 5,
   },
 });
 

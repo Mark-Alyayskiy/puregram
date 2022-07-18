@@ -13,9 +13,10 @@ import _ from 'lodash';
 
 type Props = {
   post: PostType;
+  onDeletePost: () => void;
 };
 
-const Post = ({post}: Props) => {
+const Post = ({post, onDeletePost}: Props) => {
   const navigation = useNavigation();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -80,6 +81,10 @@ const Post = ({post}: Props) => {
             userId={postData.userId}
             visible={isModalVisible}
             onModalClose={() => setIsModalVisible(false)}
+            postId={post.id}
+            onDeletePost={onDeletePost}
+            postImageUrl={post.imageUrl}
+            postLabel={post.label}
           />
           <TouchableOpacity
             style={styles.user}
@@ -120,10 +125,15 @@ const Post = ({post}: Props) => {
             <Text style={styles.likesCount}>{postData.likesCount}</Text>
             <MessageIcon />
             <Text style={styles.likesCount}>{postData.commentsCount}</Text>
-            <Text style={styles.label}>{postData.label}</Text>
           </View>
           <Text style={styles.timestamp}>
             {moment(postData.created_at).format('MMMM Do YYYY, h:mm')}
+          </Text>
+        </View>
+        <View style={styles.postFooter}>
+          <Text style={styles.label}>
+            <Text style={styles.usernameLabel}>{postData.username + ' '}</Text>
+            {postData.label}
           </Text>
         </View>
       </TouchableOpacity>

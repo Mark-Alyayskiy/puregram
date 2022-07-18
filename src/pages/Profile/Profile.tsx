@@ -23,9 +23,10 @@ import {
   DrawerLayout,
   gestureHandlerRootHOC,
 } from 'react-native-gesture-handler';
-import {DotsIcon} from '../../assets/svg';
+import {ArrowBackIcon, DotsIcon} from '../../assets/svg';
 import {launchImageLibrary} from 'react-native-image-picker';
 import FadeInView from '../../components/FadeInView';
+import {throttle} from 'lodash';
 
 const Profile = ({
   route,
@@ -34,6 +35,7 @@ const Profile = ({
   const {userId} = route.params;
 
   let drawer = useRef(null as null | {openDrawer: () => void} | any);
+  let scrollView = useRef(null as null | any);
 
   const currentUser = useSelector(selectors.auth.selectUser);
   const accessToken = useSelector(selectors.auth.selectAccessToken);
@@ -77,6 +79,11 @@ const Profile = ({
     setIsLoading(false);
   };
 
+  const onPostDelete = async () => {
+    await getUserPosts();
+    await getUserById();
+  };
+
   useEffect(() => {
     if (isFocused) {
       getUserPosts();
@@ -93,8 +100,20 @@ const Profile = ({
       headerRight: () => (
         <TouchableOpacity
           style={{marginRight: 15}}
-          onPress={() => drawer!.current!.openDrawer()}>
+          onPress={() => drawer.current.openDrawer()}>
           <DotsIcon />
+        </TouchableOpacity>
+      ),
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={throttle(
+            () => {
+              navigation.goBack();
+            },
+            500,
+            {trailing: false},
+          )}>
+          <ArrowBackIcon />
         </TouchableOpacity>
       ),
     });
@@ -164,6 +183,11 @@ const Profile = ({
         <TouchableOpacity style={styles.drawerButton} onPress={signOut}>
           <Text style={styles.drawerButtonText}>Sign Out</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.drawerButton}
+          onPress={() => drawer.current.closeDrawer()}>
+          <Text style={styles.drawerButtonText}>Close</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -182,6 +206,15 @@ const Profile = ({
     );
   }
 
+  const scrollToPost = (y: number) => {
+    scrollView.current.scrollTo({animated: true, y});
+  };
+
+  const onGridViewPressed = (index: number) => {
+    setSelectedLayout(Layout.Feed);
+    scrollToPost(index * 410);
+  };
+
   return (
     <>
       <DrawerLayout
@@ -191,7 +224,7 @@ const Profile = ({
         drawerType="slide"
         drawerBackgroundColor="#181a20"
         renderNavigationView={renderDrawer}>
-        <ScrollView style={styles.rootGrid}>
+        <ScrollView style={styles.rootGrid} ref={scrollView}>
           <View style={styles.root}>
             <UsersModal
               onUpdateProfileId={onUpdateProfileId}
@@ -226,9 +259,11 @@ const Profile = ({
               </Text>
             )}
             {selectedLayout === Layout.Grid ? (
-              <GridView posts={postsData} />
+              <GridView posts={postsData} onPress={onGridViewPressed} />
             ) : (
-              postsData.map(post => <Post post={post} key={post.id} />)
+              postsData.map(post => (
+                <Post post={post} key={post.id} onDeletePost={onPostDelete} />
+              ))
             )}
           </View>
         </ScrollView>

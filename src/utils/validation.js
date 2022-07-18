@@ -3,6 +3,9 @@ export const required = value => (value ? undefined : 'Empty field');
 export const minLenght = min => value =>
   value.length >= min ? undefined : `Should be longer that ${min} sumbols`;
 
+export const maxLength = max => value =>
+  value.length <= max ? undefined : `Should be shorter that ${max} sumbols`;
+
 export const composeValidators =
   (...validators) =>
   value =>

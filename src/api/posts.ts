@@ -1,7 +1,15 @@
 import axios from 'axios';
 import {BASE_URL} from '.';
 
-export const getPosts = async (cursor: number) => {
+export const getPosts = async (cursor: number, accessToken?: string) => {
+  if (accessToken) {
+    const res = await axios.post(
+      `${BASE_URL}/posts`,
+      {cursor},
+      {headers: {Authorization: `Bearer ${accessToken}`}},
+    );
+    return res.data;
+  }
   const res = await axios.post(`${BASE_URL}/posts`, {cursor});
   return res.data;
 };
@@ -50,4 +58,8 @@ export const addPost = async (
     },
     body: formData,
   });
+};
+
+export const deletePost = async (id: string) => {
+  return await axios.delete(`${BASE_URL}/posts/${id}`);
 };

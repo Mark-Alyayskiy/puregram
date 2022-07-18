@@ -1,12 +1,13 @@
 import {TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import Loader from '../../components/Loader';
 import styles from './styles';
-import {CaptureIcon} from '../../assets/svg';
+import {ArrowBackIcon, CaptureIcon} from '../../assets/svg';
 import {useIsFocused} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {MainNavigationList} from '../../types/navigation';
+import {throttle} from 'lodash';
 
 const AddPost = ({
   navigation,
@@ -15,6 +16,24 @@ const AddPost = ({
 
   const isFocused = useIsFocused();
   const camera = useRef<Camera>(null);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Create post',
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={throttle(
+            () => {
+              navigation.goBack();
+            },
+            500,
+            {trailing: false},
+          )}>
+          <ArrowBackIcon />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   const getPermission = async () => {
     await Camera.getCameraPermissionStatus();

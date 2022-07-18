@@ -13,7 +13,8 @@ import {HomeIcon, PersonIcon, PlusIcon} from '../assets/svg';
 import Profile from './Profile';
 import axios from 'axios';
 import PostEditor from './PostEditor';
-import PostView from './Home/PostView';
+import PostView from './PostView';
+import {Text} from 'react-native';
 
 const AuthStack = createNativeStackNavigator();
 const MainStack = createBottomTabNavigator();
@@ -44,7 +45,7 @@ const config = {
 const Navigation = () => {
   const [isBearer, setIsBearer] = useState(false);
 
-  const setBearer = () => {
+  const setBearer = async () => {
     if (accessToken) {
       axios.defaults.headers.common.Authorization = 'Bearer ' + accessToken;
       setIsBearer(true);

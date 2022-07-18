@@ -2,19 +2,20 @@ import {TouchableOpacity, View} from 'react-native';
 import React, {Fragment, useEffect, useLayoutEffect, useState} from 'react';
 import styles from './styles';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {MainNavigationList} from '../../../types/navigation';
-import Post from '../../../components/Post';
-import Comment from '../../../components/Comment';
+import {MainNavigationList} from '../../types/navigation';
+import Post from '../../components/Post';
+import Comment from '../../components/Comment';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Field, Form} from 'react-final-form';
-import Input from '../../../components/Input';
-import {ArrowBackIcon} from '../../../assets/svg';
-import {comment as commentApi, posts as postsApi} from '../../../api';
+import Input from '../../components/Input';
+import {ArrowBackIcon} from '../../assets/svg';
+import {comment as commentApi, posts as postsApi} from '../../api';
 import {useIsFocused} from '@react-navigation/native';
 
-import {CommentType} from '../../../types/comment';
-import Loader from '../../../components/Loader';
-import {Post as PostType} from '../../../types/post';
+import {CommentType} from '../../types/comment';
+import Loader from '../../components/Loader';
+import {Post as PostType} from '../../types/post';
+import {throttle} from 'lodash';
 
 const PostView = ({
   route,
@@ -31,6 +32,18 @@ const PostView = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Post',
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={throttle(
+            () => {
+              navigation.goBack();
+            },
+            500,
+            {trailing: false},
+          )}>
+          <ArrowBackIcon />
+        </TouchableOpacity>
+      ),
     });
   }, [navigation]);
 
