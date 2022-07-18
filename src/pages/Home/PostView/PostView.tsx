@@ -14,6 +14,7 @@ import {useIsFocused} from '@react-navigation/native';
 
 import {CommentType} from '../../../types/comment';
 import Loader from '../../../components/Loader';
+import {Post as PostType} from '../../../types/post';
 
 const PostView = ({
   route,
@@ -21,6 +22,7 @@ const PostView = ({
 }: NativeStackScreenProps<MainNavigationList, 'PostView'>) => {
   const {post} = route.params;
 
+  const [postData, setPostData] = useState(null as null | PostType);
   const [commentsData, setCommentsData] = useState(
     null as null | CommentType[],
   );
@@ -45,18 +47,22 @@ const PostView = ({
   useEffect(() => {
     if (isFocused) {
       getComments();
+      setPostData(post);
     } else {
       setCommentsData(null);
+      setPostData(null);
     }
-  }, []);
+  }, [isFocused]);
 
-  console.log('commentsData', commentsData);
+  if (!postData) {
+    return <Loader />;
+  }
 
   return (
     <Fragment>
       <ScrollView contentContainerStyle={{minHeight: '100%'}}>
         <View style={styles.root}>
-          <Post post={post} />
+          <Post post={postData} />
           {commentsData ? (
             commentsData.map(comment => (
               <Comment

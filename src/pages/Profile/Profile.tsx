@@ -91,7 +91,9 @@ const Profile = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => drawer!.current!.openDrawer()}>
+        <TouchableOpacity
+          style={{marginRight: 15}}
+          onPress={() => drawer!.current!.openDrawer()}>
           <DotsIcon />
         </TouchableOpacity>
       ),

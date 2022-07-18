@@ -33,7 +33,7 @@ const PostEditor = ({
         <Image style={styles.image} source={{uri: 'file://' + imageUrl}} />
         <Form
           onSubmit={onSubmit}
-          render={({handleSubmit}) => (
+          render={({handleSubmit, form}) => (
             <View>
               <Text style={styles.formTitle}>
                 Add description to your photo
@@ -54,7 +54,9 @@ const PostEditor = ({
                 <Button
                   label="Create post"
                   customStyles={styles.formButton}
-                  onPress={handleSubmit}
+                  onPress={(e: any) =>
+                    handleSubmit(e)?.then(() => form.reset())
+                  }
                   isLoading={isLoading}
                 />
               </View>
