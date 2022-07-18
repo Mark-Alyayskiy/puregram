@@ -64,7 +64,7 @@ const Post = ({post}: Props) => {
       if (initialIsPostLikedByUser !== isPostLikedByUser) {
         likePost();
       }
-    }, 500),
+    }, 300),
     [initialIsPostLikedByUser],
   );
 
