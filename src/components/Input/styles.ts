@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingHorizontal: 50,
     marginHorizontal: 15,
+    height: 50,
   },
   inputInvalid: {
     backgroundColor: '#35383f',
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginHorizontal: 15,
     paddingHorizontal: 50,
+    height: 50,
   },
   label: {
     marginVertical: 5,

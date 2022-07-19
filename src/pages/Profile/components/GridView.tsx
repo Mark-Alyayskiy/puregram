@@ -13,9 +13,8 @@ const GridView = ({posts, onPress}: Props) => {
   return (
     <ScrollView contentContainerStyle={styles.imageGridContainer}>
       {posts.map((post, index) => (
-        <TouchableOpacity onPress={() => onPress(index)}>
+        <TouchableOpacity key={post.id} onPress={() => onPress(index)}>
           <Image
-            key={post.id}
             style={styles.imageGrid}
             source={{
               uri: post.imageUrl,

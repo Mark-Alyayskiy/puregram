@@ -207,7 +207,8 @@ const Profile = ({
   }
 
   const scrollToPost = (y: number) => {
-    scrollView.current.scrollTo({animated: true, y});
+    console.log('y', y);
+    scrollView.current.scrollTo({animated: false, y});
   };
 
   const onGridViewPressed = (index: number) => {
