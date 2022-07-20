@@ -1,7 +1,22 @@
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {DotsIcon, HeartIcon, MessageIcon} from '../../assets/svg';
-import styles from '../Post/styles';
+import {
+  ControlContainer,
+  FooterUsernameLabel,
+  Header,
+  ImageContainer,
+  ItemContainer,
+  Label,
+  MenuButton,
+  PostFooter,
+  PostInfo,
+  Root,
+  Timestamp,
+  UserAvatar,
+  UserButton,
+  Username,
+} from '../Post/styles';
 import {Post as PostType} from '../../types/post';
 import moment from 'moment';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -10,6 +25,9 @@ import {useNavigation} from '@react-navigation/core';
 import BottomModal from '../BottomModal/BottomModal';
 import {posts} from '../../api';
 import _ from 'lodash';
+import {BlurView} from '@react-native-community/blur';
+
+const windowWidth = Dimensions.get('window').width;
 
 type Props = {
   post: PostType;
@@ -74,9 +92,11 @@ const Post = ({post, onDeletePost}: Props) => {
   };
 
   return (
-    <View style={styles.root}>
-      <TouchableOpacity onPress={() => navigation.navigate('PostView', {post})}>
-        <View style={styles.userHeader}>
+    <Root>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => navigation.navigate('PostView', {post})}>
+        <Header>
           <BottomModal
             userId={postData.userId}
             visible={isModalVisible}
@@ -86,58 +106,59 @@ const Post = ({post, onDeletePost}: Props) => {
             postImageUrl={post.imageUrl}
             postLabel={post.label}
           />
-          <TouchableOpacity
-            style={styles.user}
+          <UserButton
             onPress={() =>
               navigation.navigate('Profile', {userId: postData.userId})
             }>
-            <Image
-              style={styles.userAvatar}
+            <UserAvatar
               source={{
                 uri: postData.avatarUrl,
               }}
             />
 
-            <Text style={styles.usernameLabel}>{postData.username}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.delBtn}
-            onPress={() => showBottomModal()}>
+            <Username>{postData.username}</Username>
+          </UserButton>
+          <MenuButton onPress={() => showBottomModal()}>
             <DotsIcon />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imageContainer}>
+          </MenuButton>
+        </Header>
+        <ImageContainer>
           <ImageViewer
+            renderImage={props => <Image {...props} />}
             renderIndicator={() => <React.Fragment />}
-            backgroundColor="#181a20"
+            backgroundColor="#fff"
             maxOverflow={0}
             flipThreshold={0}
             renderHeader={undefined}
             imageUrls={[{url: postData.imageUrl}]}
           />
-        </View>
-        <View style={styles.control}>
-          <View style={styles.likes}>
-            <TouchableOpacity onPress={handleLikePost}>
-              <HeartIcon isActive={postData.isPostLikedByUser} />
-            </TouchableOpacity>
+          <PostInfo>
+            <ControlContainer>
+              <ItemContainer>
+                <TouchableOpacity onPress={handleLikePost}>
+                  <HeartIcon isActive={postData.isPostLikedByUser} />
+                </TouchableOpacity>
+                <Label>{postData.likesCount}</Label>
+              </ItemContainer>
+              <ItemContainer>
+                <MessageIcon />
+                <Label>{postData.commentsCount}</Label>
+              </ItemContainer>
+            </ControlContainer>
+            <Timestamp>
+              {moment(postData.created_at).format('MMMM Do YYYY, h:mm')}
+            </Timestamp>
+          </PostInfo>
+        </ImageContainer>
 
-            <Text style={styles.likesCount}>{postData.likesCount}</Text>
-            <MessageIcon />
-            <Text style={styles.likesCount}>{postData.commentsCount}</Text>
-          </View>
-          <Text style={styles.timestamp}>
-            {moment(postData.created_at).format('MMMM Do YYYY, h:mm')}
-          </Text>
-        </View>
-        <View style={styles.postFooter}>
-          <Text style={styles.label}>
-            <Text style={styles.usernameLabel}>{postData.username + ' '}</Text>
+        <PostFooter>
+          <Label>
+            <FooterUsernameLabel>{postData.username + ' '}</FooterUsernameLabel>
             {postData.label}
-          </Text>
-        </View>
+          </Label>
+        </PostFooter>
       </TouchableOpacity>
-    </View>
+    </Root>
   );
 };
 

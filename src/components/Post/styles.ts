@@ -1,81 +1,98 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import styled from 'styled-components/native';
+import {BlurView} from '@react-native-community/blur';
 
-const win = Dimensions.get('window');
+export const Root = styled.View`
+  min-height: 400px;
+  width: 100%;
+  background-color: #181a20;
+  max-width: 100%;
+  border-radius: 25px;
+  margin-bottom: 10px;
+`;
+export const Header = styled.View`
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+export const UserButton = styled.TouchableOpacity`
+  margin-left: 5%;
+  align-self: flex-start;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+export const MenuButton = styled.TouchableOpacity`
+  margin-right: 5%;
+`;
+export const PostInfo = styled.View`
+  position: absolute;
+  height: 15%;
+  width: 100%;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  flex-direction: row;
+  align-items: center;
+  align-self: center;
+  padding: 0 10px;
+  padding-top: 10px;
+  justify-content: space-between;
+`;
+export const UserAvatar = styled.Image`
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
+`;
+export const Username = styled.Text`
+  color: #fff;
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 15px;
+`;
+export const ImageContainer = styled.View`
+  align-self: center;
+  width: 90%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 15px;
+`;
+export const ControlContainer = styled.View`
+  width: 50%;
+  align-self: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 
-const styles = StyleSheet.create({
-  root: {
-    minHeight: 400,
-    width: '100%',
-    backgroundColor: '#181a20',
-    maxWidth: '100%',
-    borderRadius: 25,
-    marginBottom: 10,
-  },
-  imageContainer: {
-    width: '100%',
-    height: 300,
-  },
-  image: {
-    resizeMode: 'cover',
-    height: 300,
-    width: win.width,
-  },
-  control: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    justifyContent: 'space-between',
-  },
-  likesCount: {
-    color: '#fff',
-    marginHorizontal: 4,
-  },
-  timestamp: {
-    color: '#8f9091',
-    fontSize: 12,
-  },
-  likes: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userHeader: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  user: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  userAvatar: {
-    width: 30,
-    height: 30,
-    borderRadius: 20,
-    marginHorizontal: 10,
-  },
-  delBtn: {
-    marginHorizontal: 15,
-  },
-  usernameLabel: {
-    color: '#fff',
-    marginRight: 10,
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
-  label: {
-    color: '#fff',
-    paddingLeft: 5,
-  },
-  rootPostMenu: {
-    width: 400,
-  },
-  postFooter: {
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    marginTop: 5,
-  },
-});
+export const Label = styled.Text`
+  color: #fff;
+  margin: 0 4px;
+`;
+export const Timestamp = styled.Text`
+  margin-bottom: 10px;
+  align-items: center;
 
-export default styles;
+  color: #fff;
+  font-size: 12px;
+`;
+export const PostFooter = styled.View`
+  width: 90%;
+  flex-direction: row;
+  align-self: center;
+  margin-top: 5px;
+`;
+
+export const FooterUsernameLabel = styled.Text`
+  color: #fff;
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 15px;
+`;
+
+export const ItemContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-right: 30px;
+`;

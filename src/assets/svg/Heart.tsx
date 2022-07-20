@@ -3,8 +3,8 @@ import Svg, {Path} from 'react-native-svg';
 
 const HeartIcon = ({isActive}: {isActive?: boolean}) => (
   <Svg
-    width={30}
-    height={30}
+    width={24}
+    height={24}
     fill="none"
     stroke={isActive ? '#e51723' : '#fff'}
     viewBox="0 0 24 24">
